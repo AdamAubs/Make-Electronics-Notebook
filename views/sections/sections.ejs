@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>MakeElectronics - Experiments</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      padding: 2rem;
+      background-color: #f8f9fa;
+    }
+    h1 {
+      color: #333;
+    }
+    ul {
+      list-style-type: none;
+      padding: 0;
+    }
+    li {
+      margin-bottom: 0.5rem;
+    }
+    a {
+      text-decoration: none;
+      color: #007bff;
+    }
+    a:hover {
+      text-decoration: underline;
+    }
+  </style>
+</head>
+<body>
+  <h2>Your Experiments for this section</h2>
+  <hr>
+  <% if (experiments.length > 0) { %>
+    <ul>
+      <% experiments.forEach(experiment => { %>
+        <li>
+          <a href="/my/sections/<%= experiment.section_id %>/experiments/<%= experiment.id %>">
+            <%= experiment.title %>
+          </a>
+          <p><%= experiment.description %></p>
+        </li>
+        <hr>
+      <% }) %>
+    </ul>
+  <% } else { %>
+    <p>You have no experiments yet. Start by adding one!</p>
+  <% } %>
+</body>
+</html>

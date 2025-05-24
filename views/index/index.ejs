@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>MakeElectronics - Home</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      padding: 2rem;
+      background-color: #f8f9fa;
+    }
+    h1 {
+      color: #333;
+    }
+    ul {
+      list-style-type: none;
+      padding: 0;
+    }
+    li {
+      margin-bottom: 0.5rem;
+    }
+    a {
+      text-decoration: none;
+      color: #007bff;
+    }
+    a:hover {
+      text-decoration: underline;
+    }
+  </style>
+</head>
+<body>
+  <h1>Welcome to MakeElectronics</h1>
+  <h2>Your Sections</h2>
+  <a href="/my/sections/createSection">Add Section</a>
+  <hr>
+  <% if (sections.length > 0) { %>
+    <ul>
+      <% sections.forEach(section => { %>
+        <li>
+          <a href="/my/sections/<%= section.id %>/experiments">
+            <%= section.title %>
+          </a>
+          <p><%= section.description %></p>
+        </li>
+        <hr>
+      <% }) %>
+    </ul>
+  <% } else { %>
+    <p>You have no sections yet. Start by adding one!</p>
+  <% } %>
+</body>
+</html>

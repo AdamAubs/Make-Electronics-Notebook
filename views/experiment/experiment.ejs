@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>MakeElectronics - Experiment</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      padding: 2rem;
+      background-color: #f8f9fa;
+    }
+    h1 {
+      color: #333;
+    }
+    ul {
+      padding: 0;
+    }
+    li {
+      margin-bottom: 0.5rem;
+    }
+    a {
+      text-decoration: none;
+      color: #007bff;
+    }
+    a:hover {
+      text-decoration: underline;
+    }
+  </style>
+</head>
+<body>
+  <h2><%= experimentInfo[0].experiment_title %></h2>
+  <p><%= experimentInfo[0].experiment_description %></p>
+  <hr>
+  <h3>Components</h3>
+  
+  <% if (components.length > 0) { %>
+    <ul>
+      <% components.forEach(function(component) { %>
+        <li>
+          <p><%= component.name %></p>
+          <p><%= component.component_description %></p>
+          <p><%= component.buy_link %></p>
+        </li>
+      <% }) %>
+    </ul>
+  <% } else { %>
+    <p>You have  any components for this experiment.</p>
+  <% } %>
+  <hr>
+
+  <h3>Instructions</h3>
+  <% if (instructions.length > 0) { %>
+    <ul>
+      <% instructions.forEach(function(instruction) { %>
+        <li>
+          <p><%= instruction.step_number %></p>
+          <p><%= instruction.instruction_text %></p>
+        </li>
+      <% }) %>
+    </ul>
+  <% } else { %>
+    <p>You have  any instruction for this experiment yet.</p>
+  <% } %>
+
+</body>
+</html>

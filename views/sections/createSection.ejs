@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>MakeElectronics - Create Section</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      padding: 2rem;
+      background-color: #f8f9fa;
+    }
+    h1 {
+      color: #333;
+    }
+    ul {
+      list-style-type: none;
+      padding: 0;
+    }
+    li {
+      margin-bottom: 0.5rem;
+    }
+    a {
+      text-decoration: none;
+      color: #007bff;
+    }
+    a:hover {
+      text-decoration: underline;
+    }
+  </style>
+</head>
+<body>
+  <h1>Create a new section to group releated experiments</h1>
+  <hr>
+
+  <form action="/my/sections/createSection" method="POST">
+    <label for="sectionName">Section Name: </label>
+    <input type="text" name="sectionName" placeholder="Section Name">
+    
+    <label for="description">Description: </label>
+    <input type="text" name="description" placeholder="Description"> 
+
+    <button type="submit">Submit</button>
+  </form>
+
+</body>
+</html>

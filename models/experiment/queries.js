@@ -1,5 +1,23 @@
 const pool = require("../../db/pool.js")
 
+async function addExperiment(sectionId, experimentName, description, userId) {
+  try {
+    await pool.query("INSERT INTO experiment (title, description, section_id, created_by_user_id) VALUES ($1, $2, $3, $4)", [experimentName, description, sectionId, userId])
+    console.log(`Added experiment ${experimentName} to the db`)
+  } catch (err) {
+    console.error(`Error adding ${experimentName} to the db. Error messaage: ${err}`)
+  }
+}
+
+async function getExperimentByNameAndSection(userInput, sectionId) {
+  try {
+    const result = await pool.query("SELECT * FROM experiment WHERE title = ($1) AND section_id = ($2)", [userInput, sectionId])
+    return result.rows[0]
+  } catch (err) {
+    console.error("Error")
+  }
+}
+
 async function getExperimentInfo(experimentId) {
   try {
     const SQL = `
@@ -60,6 +78,8 @@ async function getExperimentComponents(experimentId) {
 }
 
 module.exports = {
+  addExperiment,
+  getExperimentByNameAndSection,
   getExperimentInfo,
   getExperimentInstructions,
   getExperimentComponents,

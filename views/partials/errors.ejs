@@ -1,0 +1,10 @@
+
+<% if (typeof errors !== 'undefined' && errors.length > 0) { %>
+  <div class="alert alert-danger" style="background-color: #f8d7da; color: #721c24; padding: 1rem; border-radius: 0.5rem; margin-bottom: 1rem;">
+    <ul style="margin: 0; padding-left: 1.5rem;">
+      <% errors.forEach(function(error) { %>
+        <li><%= error.msg %></li>
+      <% }); %>
+    </ul>
+  </div>
+<% } %>

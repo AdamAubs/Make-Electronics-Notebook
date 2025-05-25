@@ -30,24 +30,58 @@
   </style>
 </head>
 <body>
-  <h1>Welcome to MakeElectronics</h1>
-  <h2>Your Sections</h2>
-  <a href="/my/sections/createSection">Add Section</a>
-  <hr>
-  <% if (sections.length > 0) { %>
+  
+  <% if (user) { %>
+    <h1>Welcome, <%= user.username %> to your experiment note book! </h1> 
+    <p><a href="/logout">Logout</a></p>
+
+    <hr>
+
+    <h2>Public Sections</h2>
     <ul>
-      <% sections.forEach(section => { %>
+      <% publicSections.forEach(section => { %>
         <li>
           <a href="/my/sections/<%= section.id %>/experiments">
             <%= section.title %>
           </a>
           <p><%= section.description %></p>
         </li>
-        <hr>
       <% }) %>
     </ul>
-  <% } else { %>
-    <p>You have no sections yet. Start by adding one!</p>
+
+    <% if (privateSections) { %>
+      <h2>Your Private Sections</h2>
+      <ul>
+        <% privateSections.forEach(section => { %>
+          <li>
+            <a href="/my/sections/<%= section.id %>/experiments">
+              <%= section.title %>
+            </a>
+            <p><%= section.description %></p>
+          </li>
+        <% }) %>
+      </ul>
+      <a href="/my/sections/createSection">Add Section</a>
   <% } %>
+  <% } else { %>
+    <h1>Welcome to the experiment notebook</h1>
+    <p>Login or signup to start keep track of your experiments. <a href="/login">Login</a> | <a href="/signup">Signup</a></p>
+
+    <hr>
+
+    <h2>Public Sections</h2>
+    <ul>
+      <% publicSections.forEach(section => { %>
+        <li>
+          <a href="/sections/<%= section.id %>/experiments">
+            <%= section.title %>
+          </a>
+          <p><%= section.description %></p>
+        </li>
+      <% }) %>
+    </ul>
+  <% } %>
+  
+
 </body>
 </html>

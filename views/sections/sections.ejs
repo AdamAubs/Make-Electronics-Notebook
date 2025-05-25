@@ -30,22 +30,44 @@
   </style>
 </head>
 <body>
-  <h2>Your Experiments for this section</h2>
-  <hr>
-  <% if (experiments.length > 0) { %>
-    <ul>
-      <% experiments.forEach(experiment => { %>
-        <li>
-          <a href="/my/sections/<%= experiment.section_id %>/experiments/<%= experiment.id %>">
-            <%= experiment.title %>
-          </a>
-          <p><%= experiment.description %></p>
-        </li>
-        <hr>
-      <% }) %>
-    </ul>
-  <% } else { %>
-    <p>You have no experiments yet. Start by adding one!</p>
-  <% } %>
+  <% if (user) { %>
+    <h2>Your Experiments for this section</h2>
+    <a href="/my/sections/<%= sectionId %>/experiments/createExperiment">Add experiment</a>
+    <hr>
+    <% if (experiments.length > 0) { %>
+      <ul>
+        <% experiments.forEach(experiment => { %>
+          <li>
+            <a href="/my/sections/<%= experiment.section_id %>/experiments/<%= experiment.id %>">
+              <%= experiment.title %>
+            </a>
+            <p><%= experiment.description %></p>
+          </li>
+          <hr>
+        <% }) %>
+      </ul>
+    <% } else { %>
+      <p>You have no experiments yet. Start by adding one!</p>
+    <% } %>
+    <% } else { %>
+      <h2>The Experiments for this section</h2>
+      <hr>
+      <% if (experiments.length > 0) { %>
+        <ul>
+          <% experiments.forEach(experiment => { %>
+            <li>
+              <a href="/sections/<%= experiment.section_id %>/experiments/<%= experiment.id %>">
+                <%= experiment.title %>
+              </a>
+              <p><%= experiment.description %></p>
+            </li>
+            <hr>
+          <% }) %>
+        </ul>
+      <% } else { %>
+        <p>You have no experiments yet. Start by adding one!</p>
+      <% } %>
+    <% } %>
+  <a href="/">Back To Homepage</a>
 </body>
 </html>

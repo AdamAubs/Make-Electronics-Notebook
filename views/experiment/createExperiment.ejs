@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>MakeElectronics - Create Section</title>
+  <title>MakeElectronics - Create experiment</title>
   <style>
     body {
       font-family: Arial, sans-serif;
@@ -30,12 +30,12 @@
   </style>
 </head>
 <body>
-  <h1>Create a new section to group releated experiments</h1>
+  <h1>Create a new experiment releated to this section</h1>
   <hr>
   <%- include("../partials/errors.ejs") %>
-  <form action="/my/sections/createSection" method="POST">
-    <label for="sectionName">Section Name: </label>
-    <input type="text" name="sectionName" placeholder="Section Name">
+  <form action="/my/sections/<%= sectionId %>/experiments/createExperiment" method="POST">
+    <label for="experimentName">Experiment Name: </label>
+    <input type="text" name="experimentName" placeholder="Experiment Name">
     
     <label for="description">Description: </label>
     <input type="text" name="description" placeholder="Description"> 

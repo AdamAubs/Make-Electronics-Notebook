@@ -64,6 +64,4 @@ usersController() - coordinates handling users
 
 possible desgin idea going forward: Instruct user that this app follow the book. Then
                                     explain how to add a new section from the book as well
-                                    as walk through documenting an experiment from it. This 
-                                    could then be expanded on when the user decides to add more
-                                    to their Electronics notebook
+                                    as walk through documenting an experiment from it.

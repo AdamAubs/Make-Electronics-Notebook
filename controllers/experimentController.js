@@ -1,4 +1,4 @@
-
+const { validationResult } = require("express-validator")
 const db = require("../models/experiment/queries.js")
 
 
@@ -27,6 +27,44 @@ async function experimentGet(req, res) {
   }
 }
 
+async function experimentCreateGet(req, res) {
+  const sectionId = req.params.sectionId
+  console.log("going to create experiment page...")
+  res.render("experiment/createExperiment", {
+    title: "Create Experiment", sectionId
+  })
+}
+
+async function experimentCreatePost(req, res) {
+
+  const { experimentName, description } = req.body
+  const sectionId = req.params.sectionId
+  const userId = req.user.id
+
+  const errors = validationResult(req)
+  if (!errors.isEmpty()) {
+    console.log("Validation errors: ", errors.array())
+    return res.status(400).render("experiment/createExperiment", {
+      title: "Create Experiment",
+      sectionId,
+      errors: errors.array(),
+      experimentName,
+      description
+    })
+  }
+
+  try {
+    console.log(`Adding experiment with name: ${experimentName} description: ${description} to section with sectionId of ${sectionId}`)
+
+    await db.addExperiment(sectionId, experimentName, description,)
+    res.redirect(`/my/sections/${sectionId}/experiments`)
+  } catch (err) {
+    console.error("Unable to add experiment to section with id: ", sectionId, err)
+  }
+}
+
 module.exports = {
   experimentGet,
+  experimentCreateGet,
+  experimentCreatePost
 }

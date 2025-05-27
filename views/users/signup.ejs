@@ -1,19 +1,48 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>MakeElectronics - Signup</title>
+  <link rel="stylesheet" href="/signup/styles.css">
 </head>
+
 <body>
- <h1>Sign Up</h1>
-  <% if (error) { %><p style="color: red"><%= error %></p><% } %>
-  <form method="POST" action="/signup">
-    <label>Username: <input name="username" required /></label><br/>
-    <label>Email: <input type="email" name="email" required /></label><br/>
-    <label>Password: <input type="password" name="password" required /></label><br/>
-    <button type="submit">Sign Up</button>
-  </form>
-  <a href="/login">Already have an account?</a>
+  <main class="form-container" role="main">
+    <h1>Sign Up</h1>
+
+    <% if (error) { %>
+      <p class="error-message">
+        <%= error %>
+      </p>
+      <% } %>
+
+        <form method="POST" action="/signup" aria-label="Sign Up Form">
+          <div class="form-group">
+            <label for="username">Username:</label>
+            <input type="text" name="username" id="username" required>
+          </div>
+
+          <div class="form-group">
+            <label for="email">Email:</label>
+            <input type="email" name="email" id="email" required>
+          </div>
+
+          <div class="form-group">
+            <label for="password">Password:</label>
+            <input type="password" name="password" id="password" required>
+          </div>
+
+          <button type="submit">Sign Up</button>
+        </form>
+
+        <p class="alt-action">
+          <a href="/login">Already have an account?</a>
+        </p>
+  </main>
+
+  <script src="http://localhost:35729/livereload.js"></script>
 </body>
+
 </html>

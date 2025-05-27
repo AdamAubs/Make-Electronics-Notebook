@@ -60,7 +60,9 @@ usersController() - coordinates handling users
   - set up error handling - /controller (NEXT STEP)
 6. set up db models - /models (still in progress but retrieves basic data from db)
 7. Add experiments to db - /routes /controller /models
-8. Work on intutive way of acessing shared sections across users
+8. ~~Work on intutive way of acessing shared sections across users~~ 
+9. ~~Added user authentication~~
+10. ~~Set up public/private routes~~
 
 possible desgin idea going forward: Instruct user that this app follow the book. Then
                                     explain how to add a new section from the book as well

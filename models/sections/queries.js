@@ -1,7 +1,5 @@
 const pool = require("../../db/pool.js")
 
-
-
 async function getAllExperiments(sectionId) {
   try {
     const { rows } = await pool.query("SELECT * FROM experiment WHERE section_id = ($1)", [sectionId])
@@ -13,7 +11,28 @@ async function getAllExperiments(sectionId) {
   }
 }
 
-async function addSection(sectionName, description, userId) {
+async function getPublicExperiments(sectionId) {
+  try {
+    const { rows } = await pool.query("SELECT * FROM experiment WHERE section_id = ($1) AND is_public = ($2)", [sectionId, true])
+    console.log(rows)
+    return rows
+  } catch (err) {
+    console.error("Error retrieving publics experiments")
+  }
+}
+
+async function getPrivateExperiments(sectionId, userId) {
+
+  try {
+    const { rows } = await pool.query("SELECT * FROM experiment WHERE section_id = ($1) AND created_by_user_id = ($2)", [sectionId, userId])
+    console.log(rows)
+    return rows
+  } catch (err) {
+    console.error("Error retrieving private experiments")
+  }
+}
+
+async function addSection(sectionName, description, userId,) {
   try {
     await pool.query(
       "INSERT INTO section (title, description, created_by_user_id, is_public) VALUES ($1, $2, $3, $4)",
@@ -37,6 +56,8 @@ async function getSectionByName(userInput) {
 
 module.exports = {
   getAllExperiments,
+  getPublicExperiments,
+  getPrivateExperiments,
   addSection,
   getSectionByName
 }

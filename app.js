@@ -1,6 +1,8 @@
 
 const express = require("express")
 const app = express();
+const path = require("node:path")
+const connectLivereload = require('connect-livereload');
 
 require("dotenv").config()
 const session = require("express-session")
@@ -15,6 +17,8 @@ const experimentsRouter = require("./routes/sections/experiment.js");
 const publicSectionRouter = require("./routes/sections/publicSections.js");
 const publicExperimentsRouter = require("./routes/sections/publicExperiment.js")
 
+const apiRoutes = require('./routes/api.js');
+
 app.use(session({
   secret: process.env.SESSION_SECRET,
   resave: false,
@@ -24,11 +28,17 @@ app.use(session({
 app.use(passport.initialize());
 app.use(passport.session())
 
+app.use(connectLivereload());
+
 app.set("view engine", "ejs")
 app.use(express.urlencoded({ extended: true }))
 
+const assetsPath = path.join(__dirname, "public")
+app.use(express.static(assetsPath))
+
 app.use("/", indexRouter)
 app.use("/", usersRouter)
+app.use('/api', apiRoutes);
 app.use("/sections/", publicSectionRouter)
 app.use("/sections/", publicExperimentsRouter)
 app.use("/my/sections/", sectionsIndexRouter)

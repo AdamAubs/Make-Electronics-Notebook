@@ -1,8 +1,8 @@
 const pool = require("../../db/pool.js")
 
-async function addExperiment(sectionId, experimentName, description, userId) {
+async function addExperiment(sectionId, experimentName, description, userId, isPublic) {
   try {
-    await pool.query("INSERT INTO experiment (title, description, section_id, created_by_user_id) VALUES ($1, $2, $3, $4)", [experimentName, description, sectionId, userId])
+    await pool.query("INSERT INTO experiment (title, description, section_id, created_by_user_id, is_public) VALUES ($1, $2, $3, $4, $5)", [experimentName, description, sectionId, userId, isPublic])
     console.log(`Added experiment ${experimentName} to the db`)
   } catch (err) {
     console.error(`Error adding ${experimentName} to the db. Error messaage: ${err}`)
@@ -17,6 +17,7 @@ async function getExperimentByNameAndSection(userInput, sectionId) {
     console.error("Error")
   }
 }
+
 
 async function getExperimentInfo(experimentId) {
   try {
@@ -77,10 +78,20 @@ async function getExperimentComponents(experimentId) {
   }
 }
 
+
+async function deleteExperiment(experimentId, userId) {
+  try {
+    await pool.query("DELETE FROM experiment WHERE id = ($1) AND created_by_user_id = ($2)", [experimentId, userId])
+  } catch (err) {
+    console.error("Error deleting experiment from db", err)
+  }
+}
+
 module.exports = {
   addExperiment,
   getExperimentByNameAndSection,
   getExperimentInfo,
   getExperimentInstructions,
   getExperimentComponents,
+  deleteExperiment
 }

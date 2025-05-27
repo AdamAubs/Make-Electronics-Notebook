@@ -38,6 +38,7 @@ async function experimentCreateGet(req, res) {
 async function experimentCreatePost(req, res) {
 
   const { experimentName, description } = req.body
+  const isPublic = req.body.isPublic === 'true'
   const sectionId = req.params.sectionId
   const userId = req.user.id
 
@@ -56,15 +57,26 @@ async function experimentCreatePost(req, res) {
   try {
     console.log(`Adding experiment with name: ${experimentName} description: ${description} to section with sectionId of ${sectionId}`)
 
-    await db.addExperiment(sectionId, experimentName, description,)
+    await db.addExperiment(sectionId, experimentName, description, userId, isPublic)
     res.redirect(`/my/sections/${sectionId}/experiments`)
   } catch (err) {
     console.error("Unable to add experiment to section with id: ", sectionId, err)
   }
 }
 
+async function experimentDelete(req, res) {
+  const experimentId = req.params.experimentId
+  const sectionId = req.params.sectionId
+  const userId = req.user.id
+
+  console.log(`deleting experiment from ${req.user} db...`)
+  await db.deleteExperiment(experimentId, userId)
+  res.redirect(`/my/sections/${sectionId}/experiments`)
+}
+
 module.exports = {
   experimentGet,
   experimentCreateGet,
-  experimentCreatePost
+  experimentCreatePost,
+  experimentDelete
 }

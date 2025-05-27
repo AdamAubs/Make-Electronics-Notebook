@@ -1,0 +1,66 @@
+html,
+body {
+  margin: 0;
+  padding: 0;
+  height: 100%;
+}
+
+
+.map-container {
+  position: relative;
+  width: 100%;
+  height: auto;
+}
+
+.map-background {
+  width: 100%;
+  height: auto;
+  display: block;
+}
+
+.text-button {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: absolute;
+  width: 33%;
+  height: 8%;
+  aspect-ratio: 1 / 1;
+  background: green;
+  color: white;
+  transform: translate(-50%, -50%);
+  text-align: center;
+  font-size: 0.5em;
+  text-decoration: none;
+}
+
+.map-button {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: absolute;
+  width: 12%;
+  aspect-ratio: 1 / 1;
+  background: green;
+  color: white;
+  border-radius: 50%;
+  transform: translate(-50%, -50%);
+  text-align: center;
+  font-size: 0.5em;
+  text-decoration: none;
+}
+
+#img-1 {
+  top: 30%;
+  left: 69%
+}
+
+#img-2 {
+  top: 42%;
+  left: 42.4%
+}
+
+#login-txt {
+  top: 6%;
+  left: 21%;
+}

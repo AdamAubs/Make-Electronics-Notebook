@@ -1,8 +1,8 @@
 const { Router } = require("express")
-const publicSectionController = require("../../controllers/publicSectionController.js")
+const sectionController = require("../../controllers/sectionController.js")
 
 const publicSectionRouter = Router()
 
-publicSectionRouter.get("/:sectionId/experiments", publicSectionController.experimentsListGet)
+publicSectionRouter.get("/:sectionId/experiments", sectionController.experimentsListGet)
 
 module.exports = publicSectionRouter

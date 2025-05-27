@@ -1,4 +1,9 @@
 {
+  "scripts": {
+    "start": "node app.js",
+    "reload": "node reload.js",
+    "dev": "concurrently \"npm run reload\" \"npm run start\""
+  },
   "dependencies": {
     "bcrypt": "^6.0.0",
     "dotenv": "^16.5.0",
@@ -10,5 +15,10 @@
     "passport": "^0.7.0",
     "passport-local": "^1.0.0",
     "pg": "^8.16.0"
+  },
+  "devDependencies": {
+    "concurrently": "^9.1.2",
+    "connect-livereload": "^0.6.1",
+    "livereload": "^0.9.3"
   }
 }

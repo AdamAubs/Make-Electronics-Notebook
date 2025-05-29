@@ -34,6 +34,17 @@ body {
   text-decoration: none;
 }
 
+.page-title {
+  position: absolute;
+  top: 14%;
+  left: 50%;
+  transform: translateX(-50%);
+  font-size: 2em;
+  font-family: 'Courier New', monospace;
+  color: #00ff88;
+  text-shadow: 0 0 5px #00ff88;
+}
+
 .map-button {
   display: flex;
   align-items: center;
@@ -50,9 +61,31 @@ body {
   text-decoration: none;
 }
 
+.map-sec-description {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: absolute;
+  width: 23%;
+  height: 8%;
+  aspect-ratio: 1 / 1;
+  background: green;
+  color: white;
+  transform: translate(-50%, -50%);
+  text-align: center;
+  font-size: 0.5em;
+  text-decoration: none;
+}
+
 #img-1 {
   top: 30%;
   left: 69%
+}
+
+#desc-1 {
+  top: 38%;
+  left: 85%;
+
 }
 
 #img-2 {
@@ -63,4 +96,35 @@ body {
 #login-txt {
   top: 6%;
   left: 21%;
+}
+
+#logout-txt {
+  top: 6%;
+  left: 21%;
+}
+
+.greeting-text {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: absolute;
+  width: 33%;
+  height: 8%;
+  aspect-ratio: 1 / 1;
+  background: green;
+  color: white;
+  transform: translate(-50%, -50%);
+  text-align: center;
+  font-size: 0.5em;
+  text-decoration: none;
+}
+
+#greeting-1 {
+  top: 5%;
+  left: 77%;
+}
+
+#greeting-2 {
+  top: 5%;
+  left: 77%;
 }

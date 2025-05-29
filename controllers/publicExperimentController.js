@@ -3,11 +3,14 @@ const db = require("../models/experiment/queries.js")
 
 async function experimentGet(req, res) {
 
+  const sectionId = req.sectionId
+  const experimentId = req.experimentId
+  const user = null
+
   try {
     console.log("Getting experiment for user")
     const experimentId = req.params.experimentId
     console.log("Getting experiment id", experimentId)
-
 
     const experimentInfo = await db.getExperimentInfo(experimentId)
     console.log("Retrieved experiment info: ", experimentInfo)
@@ -20,7 +23,8 @@ async function experimentGet(req, res) {
     const components = await db.getExperimentComponents(experimentId)
     console.log("Retrieved experiment components: ", components)
 
-    res.render("experiment/experiment", { title: "Experiment", experimentInfo, instructions, components })
+
+    res.render("experiment/experiment", { title: "Experiment", experimentInfo, instructions, components, sectionId, experimentId, user })
   } catch (err) {
     console.error("Unable to get render experiment", err)
   }

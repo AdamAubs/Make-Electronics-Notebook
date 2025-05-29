@@ -12,73 +12,28 @@
   <div class="map-container">
     <img src="/images/ProgressDisplayBackground2.png" alt="Map" class="map-background" />
 
-    <a class="text-button" id="login-txt" href="/login">LOGIN</a>
+    <% if (user) { %>
+      <a class="text-button" id="logout-txt" href="/logout">LOGOUT</a>
+      <p class="greeting-text" id="greeting-1">Welcome, <%= user.username %>
+      </p>
+      <% } else { %>
+        <a class="text-button" id="login-txt" href="/login">LOGIN</a>
+        <p class="greeting-text" id="greeting-2">Login to keep track of your progress and store experiment observations
+        </p>
+        <% } %>
 
-    <a class="map-button" id="img-1" href="/my/sections/1/experiments">Section 1</a>
-    <a class="map-button" id="img-2" href="/my/sections/2/experiments">Section 2</a>
+
+          <h1 class="page-title">MakeElectronics</h1>
+
+          <% publicSections.forEach(function(section) { %>
+            <a class="map-button" id="img-<%= section.id %>" href="/my/sections/<%= section.id %>/experiments">
+              <%= section.title %>
+            </a>
+            <p class="map-sec-description" id="desc-<%= section.id %>">
+              <%= section.description %>
+            </p>
+            <% }) %>
   </div>
-
-
-  <!-- <% if (user) { %> -->
-  <!--   <h1>Welcome, <%= user.username %> to your experiment note book! </h1> -->
-  <!--   <p><a href="/logout">Logout</a></p> -->
-  <!---->
-  <!--   <hr> -->
-  <!---->
-  <!--   <h2>Public Sections</h2> -->
-  <!--   <ul> -->
-  <!--     <% publicSections.forEach(section=> { %> -->
-  <!--       <li> -->
-  <!--         <a href="/my/sections/<%= section.id %>/experiments"> -->
-  <!--           <%= section.title %> -->
-  <!--         </a> -->
-  <!--         <p> -->
-  <!--           <%= section.description %> -->
-  <!--         </p> -->
-  <!--       </li> -->
-  <!--       <% }) %> -->
-  <!--   </ul> -->
-  <!---->
-  <!--   <% if (privateSections) { %> -->
-  <!--     <h2>Your Private Sections</h2> -->
-  <!--     <ul> -->
-  <!--       <% privateSections.forEach(section=> { %> -->
-  <!--         <li> -->
-  <!--           <a href="/my/sections/<%= section.id %>/experiments"> -->
-  <!--             <%= section.title %> -->
-  <!--           </a> -->
-  <!--           <p> -->
-  <!--             <%= section.description %> -->
-  <!--           </p> -->
-  <!--         </li> -->
-  <!--         <% }) %> -->
-  <!--     </ul> -->
-  <!--     <a href="/my/sections/createSection">Add Section</a> -->
-  <!--     <% } %> -->
-  <!--       <% } else { %> -->
-  <!--         <h1>Welcome to the experiment notebook</h1> -->
-  <!--         <p>Login or signup to start keep track of your experiments. <a href="/login">Login</a> | <a -->
-  <!--             href="/signup">Signup</a></p> -->
-  <!---->
-  <!--         <hr> -->
-  <!---->
-  <!--         <h2>Public Sections</h2> -->
-  <!--         <ul> -->
-  <!--           <% publicSections.forEach(section=> { %> -->
-  <!--             <li> -->
-  <!--               <a href="/sections/<%= section.id %>/experiments"> -->
-  <!--                 <%= section.title %> -->
-  <!--               </a> -->
-  <!--               <p> -->
-  <!--                 <%= section.description %> -->
-  <!--               </p> -->
-  <!--             </li> -->
-  <!--             <% }) %> -->
-  <!--         </ul> -->
-  <!--         <% } %> -->
 </body>
-
-
-<script src="/index/progressMap.js"></script>
 
 </html>

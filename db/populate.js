@@ -3,6 +3,15 @@ const { Client } = require("pg")
 
 
 const SQL = `
+-- Drop tables in reverse dependency order
+DROP TABLE IF EXISTS observation CASCADE;
+DROP TABLE IF EXISTS experiment_component CASCADE;
+DROP TABLE IF EXISTS instruction CASCADE;
+DROP TABLE IF EXISTS experiment CASCADE;
+DROP TABLE IF EXISTS component CASCADE;
+DROP TABLE IF EXISTS section CASCADE;
+DROP TABLE IF EXISTS app_user CASCADE;
+
 -- User table: Stores user accounts
 CREATE TABLE IF NOT EXISTS app_user (
   id INTEGER PRIMARY KEY GENERATED ALWAYS AS IDENTITY,   -- Auto-incrementing user ID (SQL-compliant)
@@ -18,7 +27,8 @@ CREATE TABLE IF NOT EXISTS section (
   title VARCHAR(255) NOT NULL,                           -- Required section title
   description TEXT,                                      -- Optional description
   created_by_user_id INTEGER REFERENCES app_user(id) ON DELETE SET NULL, -- Creator reference
-  created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP         -- Creation timestamp
+  created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,         -- Creation timestamp
+  is_public BOOLEAN DEFAULT false
 );
 
 -- Experiment table: Individual experiments within a section
@@ -28,7 +38,8 @@ CREATE TABLE IF NOT EXISTS experiment (
   description TEXT,                                      -- Optional description
   section_id INTEGER NOT NULL REFERENCES section(id) ON DELETE CASCADE, -- Required section reference
   created_by_user_id INTEGER REFERENCES app_user(id) ON DELETE SET NULL,  -- Creator reference
-  created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP         -- Creation timestamp
+  created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,         -- Creation timestamp
+  is_public BOOLEAN DEFAULT false
 );
 
 -- Instruction table: Steps to perform an experiment
@@ -67,63 +78,160 @@ CREATE TABLE IF NOT EXISTS observation (
   created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP          -- Creation timestamp
 );
 
--- Insert a user
+-- Insert Makerbot user
 INSERT INTO app_user (username, email, password_hash)
-VALUES ('maker123', 'maker@example.com', 'hashed_password_here');
+VALUES ('makerbot', 'makerbot@example.com', 'hashed_password_here');
 
--- Insert a section
-INSERT INTO section (title, description, created_by_user_id)
-VALUES (
-  'Basic Circuits',
-  'Covers fundamental experiments like resistors, LEDs, and batteries.',
-  1
-);
-
--- Insert experiments
-INSERT INTO experiment (title, description, section_id, created_by_user_id)
+-- Insert 5 public sections in order
+INSERT INTO section (title, description, created_by_user_id, is_public)
 VALUES 
-  (
-    'LED Blinker',
-    'Make an LED blink using a resistor and a battery.',
-    1,
-    1
-  ),
-  (
-    'Voltage Divider',
-    'Demonstrate how voltage divides across resistors in series.',
-    1,
-    1
-  );
+  ('Section One: The Basics', NULL, 1, true),
+  ('Section Two: Switching', NULL, 1, true),
+  ('Section Three: Soldering', NULL, 1, true),
+  ('Section Four: Chips, Ahoy!', NULL, 1, true),
+  ('Section Five What Next?', NULL, 1, true);
 
--- Insert instructions for experiment 1
+
+-- Insert Experiments
+INSERT INTO experiment (title, description, section_id, created_by_user_id, is_public)
+VALUES 
+  -- Section One
+  ('Build a Simple Circuit', 'Use a battery, resistor, and LED to build a basic circuit.', 1, 1, true),
+  ('Understand Resistors', 'Measure resistance and learn how they affect circuits.', 1, 1, true),
+
+  -- Section Two
+  ('Using a SPST Switch', 'Control a circuit with a Single Pole Single Throw switch.', 2, 1, true),
+  ('Toggle with a Pushbutton', 'Implement a pushbutton as an input in a circuit.', 2, 1, true),
+
+  -- Section Three
+  ('Solder a Header Pin', 'Learn to solder a pin to a PCB.', 3, 1, true),
+  ('Fix a Broken Connection', 'Resolder a lifted pad on a board.', 3, 1, true),
+
+  -- Section Four
+  ('Blink an LED with a 555 Timer', 'Use a 555 timer IC in astable mode.', 4, 1, true),
+  ('Build a Counter with a 4017 IC', 'Use a decade counter to sequence outputs.', 4, 1, true),
+
+  -- Section Five
+  ('Design Your Own PCB', 'Plan and design a basic printed circuit board.', 5, 1, true),
+  ('Simulate Before You Build', 'Use a simulator to test circuit behavior before assembly.', 5, 1, true);
+
+-- Insert Components
+INSERT INTO component (name, description, datasheet_url, buy_link)
+VALUES 
+  ('LED', 'Light Emitting Diode', NULL, NULL),
+  ('Resistor 220Ω', 'Used to limit current to the LED', NULL, NULL),
+  ('SPST Switch', 'Single Pole Single Throw switch', NULL, NULL),
+  ('Pushbutton', 'Momentary contact switch', NULL, NULL),
+  ('555 Timer IC', 'Timer chip for creating delays or oscillation', NULL, NULL),
+  ('4017 Decade Counter IC', 'IC that counts pulses and activates outputs in sequence', NULL, NULL),
+  ('Soldering Iron', 'Used to melt solder', NULL, NULL),
+  ('PCB', 'Printed circuit board', NULL, NULL);
+
+-- Link Experiments to Components
+INSERT INTO experiment_component (experiment_id, component_id, quantity, notes)
+VALUES 
+  (1, 1, 1, 'LED to show power flow'),
+  (1, 2, 1, 'Resistor to protect LED'),
+  (2, 2, 3, 'Multiple resistors for comparison'),
+
+  (3, 3, 1, 'Switch to control LED'),
+  (4, 4, 1, 'Pushbutton for input'),
+
+  (5, 7, 1, 'Essential soldering tool'),
+  (6, 7, 1, 'For rework of broken pads'),
+
+  (7, 5, 1, 'Main timing component'),
+  (7, 1, 1, 'LED to indicate blink'),
+
+  (8, 6, 1, 'Main IC for counting'),
+  (8, 1, 10, 'Ten LEDs to show sequence'),
+
+  (9, 8, 1, 'Designing a custom PCB'),
+  (10, 2, 2, 'Testing circuit in simulation');
+
+-- Insert Instructions
 INSERT INTO instruction (experiment_id, step_number, text)
 VALUES 
-  (1, 1, 'Connect a 220-ohm resistor to the positive leg of the LED.'),
-  (1, 2, 'Attach the negative leg of the LED to the ground.'),
-  (1, 3, 'Power the circuit using a 9V battery and observe the LED.');
+  (1, 1, 'Connect the resistor to the positive terminal of the battery.'),
+  (1, 2, 'Connect the LED after the resistor.'),
+  (1, 3, 'Complete the circuit by connecting the LED to the battery ground.'),
 
--- Insert components
-INSERT INTO component (name, description, datasheet_url, buy_link)
-VALUES
-  ('LED (Red)', 'Standard 5mm red LED', NULL, 'https://example.com/led'),
-  ('220-ohm Resistor', 'Resistor with color bands: red-red-brown-gold', NULL, 'https://example.com/resistor'),
-  ('9V Battery', 'Standard 9V battery', NULL, 'https://example.com/9vbattery'),
-  ('Breadboard', '400-point breadboard for prototyping', NULL, 'https://example.com/breadboard');
+  (3, 1, 'Place switch in series with the LED.'),
+  (3, 2, 'Toggle the switch to observe behavior.'),
 
--- Associate components to experiment 1 (LED Blinker)
-INSERT INTO experiment_component (experiment_id, component_id, quantity)
-VALUES
-  (1, 1, 1),  -- LED
-  (1, 2, 1),  -- Resistor
-  (1, 3, 1),  -- 9V Battery
-  (1, 4, 1);  -- Breadboard
+  (7, 1, 'Insert the 555 timer into the breadboard.'),
+  (7, 2, 'Wire the timer in astable mode.'),
+  (7, 3, 'Connect the LED to output pin and observe blinking.');
 
--- Observation by user for experiment 1
+-- Insert Observations
 INSERT INTO observation (experiment_id, user_id, type, data)
 VALUES 
-  (1, 1, 'reading', 'LED blinks every 1 second'),
-  (1, 1, 'note', 'Resistor gets slightly warm after prolonged use');
+  (1, 1, 'note', 'LED lights up when battery is connected.'),
+  (1, 1, 'measurement', 'Voltage across LED: 1.8V'),
+
+  (3, 1, 'note', 'Switch toggles LED on and off correctly.'),
+
+  (7, 1, 'note', 'LED blinks approximately once per second.'),
+  (7, 1, 'measurement', 'Frequency measured: ~1Hz using multimeter.');
 `;
+
+// -- Insert a user
+// INSERT INTO app_user (username, email, password_hash)
+// VALUES ('maker123', 'maker@example.com', 'hashed_password_here');
+//
+// -- Insert a section
+// INSERT INTO section (title, description, created_by_user_id)
+// VALUES (
+//   'Basic Circuits',
+//   'Covers fundamental experiments like resistors, LEDs, and batteries.',
+//   1
+// );
+//
+// -- Insert experiments
+// INSERT INTO experiment (title, description, section_id, created_by_user_id)
+// VALUES 
+//   (
+//     'LED Blinker',
+//     'Make an LED blink using a resistor and a battery.',
+//     1,
+//     1
+//   ),
+//   (
+//     'Voltage Divider',
+//     'Demonstrate how voltage divides across resistors in series.',
+//     1,
+//     1
+//   );
+//
+// -- Insert instructions for experiment 1
+// INSERT INTO instruction (experiment_id, step_number, text)
+// VALUES 
+//   (1, 1, 'Connect a 220-ohm resistor to the positive leg of the LED.'),
+//   (1, 2, 'Attach the negative leg of the LED to the ground.'),
+//   (1, 3, 'Power the circuit using a 9V battery and observe the LED.');
+//
+// -- Insert components
+// INSERT INTO component (name, description, datasheet_url, buy_link)
+// VALUES
+//   ('LED (Red)', 'Standard 5mm red LED', NULL, 'https://example.com/led'),
+//   ('220-ohm Resistor', 'Resistor with color bands: red-red-brown-gold', NULL, 'https://example.com/resistor'),
+//   ('9V Battery', 'Standard 9V battery', NULL, 'https://example.com/9vbattery'),
+//   ('Breadboard', '400-point breadboard for prototyping', NULL, 'https://example.com/breadboard');
+//
+// -- Associate components to experiment 1 (LED Blinker)
+// INSERT INTO experiment_component (experiment_id, component_id, quantity)
+// VALUES
+//   (1, 1, 1),  -- LED
+//   (1, 2, 1),  -- Resistor
+//   (1, 3, 1),  -- 9V Battery
+//   (1, 4, 1);  -- Breadboard
+//
+// -- Observation by user for experiment 1
+// INSERT INTO observation (experiment_id, user_id, type, data)
+// VALUES 
+//   (1, 1, 'reading', 'LED blinks every 1 second'),
+//   (1, 1, 'note', 'Resistor gets slightly warm after prolonged use');
+// `;
 
 async function main() {
 

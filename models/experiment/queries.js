@@ -78,6 +78,23 @@ async function getExperimentComponents(experimentId) {
   }
 }
 
+async function getExperimentObservation(experimentId, userId) {
+  try {
+    const SQL = `
+                SELECT * 
+                FROM observation AS o
+                WHERE o.experiment_id = $1 AND user_id = $2
+                LIMIT 1;
+    `
+    const result = await pool.query(SQL, [experimentId, userId])
+    // console.log(rows)
+    return result.rows[0]
+  } catch (err) {
+    console.error("Error fetching observation from db", err)
+    return []
+  }
+
+}
 
 async function deleteExperiment(experimentId, userId) {
   try {
@@ -87,11 +104,43 @@ async function deleteExperiment(experimentId, userId) {
   }
 }
 
+async function addObservation(experimentId, userId, observation_markdown) {
+  try {
+    await pool.query(
+      `INSERT INTO observation (experiment_id, user_id, type, data)
+       VALUES ($1, $2, 'markdown', $3)`,
+      [experimentId, userId, observation_markdown]
+    )
+  } catch (err) {
+    console.error("Unable to add markdown observation to db")
+  }
+}
+
+async function updateObservation(obsId, userId, observation_markdown) {
+  try {
+    const SQL = `
+                UPDATE observation
+                SET data = $1
+                WHERE id = $2 AND user_id = $3;
+    `
+
+    await pool.query(SQL, [observation_markdown, obsId, userId])
+  } catch (err) {
+    console.error("Unable to add markdown observation to db")
+  }
+}
+
+
+
+
 module.exports = {
   addExperiment,
   getExperimentByNameAndSection,
   getExperimentInfo,
   getExperimentInstructions,
   getExperimentComponents,
-  deleteExperiment
+  deleteExperiment,
+  addObservation,
+  updateObservation,
+  getExperimentObservation
 }

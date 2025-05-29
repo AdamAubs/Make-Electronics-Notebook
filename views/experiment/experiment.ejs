@@ -1,67 +1,150 @@
+
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>MakeElectronics - Experiment</title>
+
+  <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/dompurify@3.0.5/dist/purify.min.js"></script>
+</head>
+
+<body>
+  <main id="experiment-page">
+
+    <header>
+      <h2 class="experiment-title"><%= experimentInfo[0].experiment_title %></h2>
+      <p class="experiment-description"><%= experimentInfo[0].experiment_description %></p>
+    </header>
+
+    <hr />
+
+    <section id="components-section">
+      <h3>Components</h3>
+      <% if (components.length > 0) { %>
+        <ul class="component-list">
+          <% components.forEach(function(component) { %>
+            <li class="component-item">
+              <article>
+                <p class="component-name"><%= component.name %></p>
+                <p class="component-description"><%= component.component_description %></p>
+                <p class="component-link"><a href="<%= component.buy_link %>" target="_blank"><%= component.buy_link %></a></p>
+              </article>
+            </li>
+          <% }) %>
+        </ul>
+      <% } else { %>
+        <p>You have no components for this experiment.</p>
+      <% } %>
+    </section>
+
+    <hr />
+
+    <section id="instructions-section">
+      <h3>Instructions</h3>
+      <% if (instructions.length > 0) { %>
+        <ul class="instruction-list">
+          <% instructions.forEach(function(instruction) { %>
+            <li class="instruction-item" data-step-id="<%= instruction.step_number %>">
+              <label class="instruction-label">
+                <input type="checkbox" class="instruction-checkbox" data-step="<%= instruction.step_number %>" />
+                <span class="instruction-text">
+                  <strong>Step <%= instruction.step_number %>:</strong> <%= instruction.instruction_text %>
+                </span>
+              </label>
+            </li>
+          <% }) %>
+        </ul>
+      <% } else { %>
+        <p>You have no instructions for this experiment yet.</p>
+      <% } %>
+    </section>
+
+    <% if (user) { %>
+      <section id="observation-section">
+        <h3>Your Observation</h3>
+
+        <% if (observation) {
+          const obs = observation;
+        %>
+          <!-- Preview Mode -->
+          <div id="observation-preview" class="observation-rendered" data-md="<%- obs.data.replace(/"/g, '&quot;').replace(/\r?\n/g, '&#10;') %>"></div>
+          <button id="edit-button">Edit</button>
+
+          <!-- Edit Form -->
+          <form id="edit-form" action="/my/sections/<%= sectionId %>/experiments/<%= experimentId %>/editObservation/<%= obs.id %>" method="POST" style="display: none;">
+            <textarea name="observation_markdown" id="edit-textarea" rows="20" cols="60"><%- obs.data %></textarea>
+            <br />
+            <button type="submit">Save</button>
+            <button type="button" id="cancel-edit">Cancel</button>
+          </form>
+        <% } else { %>
+          <!-- New Observation Form -->
+          <form action="/my/sections/<%= sectionId %>/experiments/<%= experimentId %>/createObservation" method="POST">
+            <textarea name="observation_markdown" id="observation_markdown" rows="20" cols="60" placeholder="Write your observation in markdown..."></textarea>
+            <br />
+            <button type="submit">Submit Observation</button>
+          </form>
+        <% } %>
+      </section>
+    <% } else { %>
+      <p>Login to start making observations! <a href="/login">Login</a></p>
+    <% } %>
+
+  </main>
+
+  <script>
+    // Render markdown safely
+    document.querySelectorAll('.observation-rendered').forEach(el => {
+      const raw = el.getAttribute('data-md');
+      const parsed = marked.parse(raw);
+      const clean = DOMPurify.sanitize(parsed);
+      el.innerHTML = clean;
+    });
+
+    // Edit/Cancel functionality
+    const editBtn = document.getElementById('edit-button');
+    const preview = document.getElementById('observation-preview');
+    const form = document.getElementById('edit-form');
+    const cancelBtn = document.getElementById('cancel-edit');
+
+    if (editBtn && form && preview && cancelBtn) {
+      editBtn.addEventListener('click', () => {
+        preview.style.display = 'none';
+        form.style.display = 'block';
+        editBtn.style.display = 'none';
+      });
+
+      cancelBtn.addEventListener('click', () => {
+        form.style.display = 'none';
+        preview.style.display = 'block';
+        editBtn.style.display = 'inline';
+      });
+    }
+
+    // Toggle strikethrough on instruction checkbox
+    document.querySelectorAll('.instruction-checkbox').forEach(cb => {
+      cb.addEventListener('change', function () {
+        const label = this.closest('.instruction-label');
+        if (this.checked) {
+          label.classList.add('completed');
+        } else {
+          label.classList.remove('completed');
+        }
+      });
+    });
+  </script>
+
   <style>
-    body {
-      font-family: Arial, sans-serif;
-      padding: 2rem;
-      background-color: #f8f9fa;
-    }
-    h1 {
-      color: #333;
-    }
-    ul {
-      padding: 0;
-    }
-    li {
-      margin-bottom: 0.5rem;
-    }
-    a {
-      text-decoration: none;
-      color: #007bff;
-    }
-    a:hover {
-      text-decoration: underline;
+    /* Optional styling for crossed-out instructions */
+    .instruction-label.completed .instruction-text {
+      text-decoration: line-through;
+      opacity: 0.6;
     }
   </style>
-</head>
-<body>
-  <h2><%= experimentInfo[0].experiment_title %></h2>
-  <p><%= experimentInfo[0].experiment_description %></p>
-  <hr>
-  <h3>Components</h3>
-  
-  <% if (components.length > 0) { %>
-    <ul>
-      <% components.forEach(function(component) { %>
-        <li>
-          <p><%= component.name %></p>
-          <p><%= component.component_description %></p>
-          <p><%= component.buy_link %></p>
-        </li>
-      <% }) %>
-    </ul>
-  <% } else { %>
-    <p>You have  any components for this experiment.</p>
-  <% } %>
-  <hr>
-
-  <h3>Instructions</h3>
-  <% if (instructions.length > 0) { %>
-    <ul>
-      <% instructions.forEach(function(instruction) { %>
-        <li>
-          <p><%= instruction.step_number %></p>
-          <p><%= instruction.instruction_text %></p>
-        </li>
-      <% }) %>
-    </ul>
-  <% } else { %>
-    <p>You have  any instruction for this experiment yet.</p>
-  <% } %>
-
 </body>
+
 </html>
+

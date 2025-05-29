@@ -4,6 +4,8 @@ const { createExperimentValidator } = require("../../validators/experiment.js")
 const experimentController = require("../../controllers/experimentController.js")
 const experimentRouter = Router()
 
+experimentRouter.post("/:sectionId/experiments/:experimentId/createObservation", ensureAuthenticated, experimentController.experimentCreateObservationPost)
+experimentRouter.post("/:sectionId/experiments/:experimentId/editObservation/:obsId", ensureAuthenticated, experimentController.experimentUpdateObservationPost)
 experimentRouter.get("/:sectionId/experiments/createExperiment", ensureAuthenticated, experimentController.experimentCreateGet)
 experimentRouter.post("/:sectionId/experiments/createExperiment", ensureAuthenticated, createExperimentValidator, experimentController.experimentCreatePost)
 experimentRouter.post("/:sectionId/experiments/:experimentId/delete", ensureAuthenticated, experimentController.experimentDelete)

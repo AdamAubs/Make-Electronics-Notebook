@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="en">
 
@@ -6,6 +5,9 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>MakeElectronics - Experiment</title>
+
+  <link href="https://fonts.googleapis.com/css2?family=VT323&display=swap" rel="stylesheet"> 
+  <link rel="stylesheet" href="/experiment/styles.css">
 
   <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/dompurify@3.0.5/dist/purify.min.js"></script>
@@ -19,48 +21,81 @@
       <p class="experiment-description"><%= experimentInfo[0].experiment_description %></p>
     </header>
 
-    <hr />
-
     <section id="components-section">
       <h3>Components</h3>
+
       <% if (components.length > 0) { %>
         <ul class="component-list">
           <% components.forEach(function(component) { %>
             <li class="component-item">
-              <article>
-                <p class="component-name"><%= component.name %></p>
-                <p class="component-description"><%= component.component_description %></p>
-                <p class="component-link"><a href="<%= component.buy_link %>" target="_blank"><%= component.buy_link %></a></p>
-              </article>
+              <!-- <article> -->
+              <!--   <form action="/my/sections/<%= sectionId %>/experiments/<%= experimentId %>/editComponent/<%= component.id %>" method="POST"> -->
+              <!--     <input type="text" name="name" value="<%= component.name %>" required> -->
+              <!--     <textarea name="component_description" rows="2"><%= component.component_description %></textarea> -->
+              <!--     <input type="url" name="buy_link" value="<%= component.buy_link %>"> -->
+              <!--     <button type="submit">Save</button> -->
+              <!--   </form> -->
+              <!--   <form action="/my/sections/<%= sectionId %>/experiments/<%= experimentId %>/deleteComponent/<%= component.id %>" method="POST" style="display:inline;"> -->
+              <!--     <button type="submit" onclick="return confirm('Are you sure you want to delete this component?')">Delete</button> -->
+              <!--   </form> -->
+              <!-- </article> -->
+                <p><%= component.name %></p>
+                <p><%= component.description %></p>
+                <p><%= component.datasheet_url || '' %></p>
+                <p><%= component.buy_link || ''%></p>
+                <a href="/my/sections/<%= sectionId %>/experiments/<%= experimentId %>/editComponent/<%= component.component_id %>">Edit</a>
+                <form action="/my/sections/<%= sectionId %>/experiments/<%= experimentId %>/deleteComponent/<%= component.component_id %>" method="POST" style="display:inline;">
+                  <button type="submit" onclick="return confirm('Are you sure you want to delete this component?')">Delete</button>
+                </form>
             </li>
           <% }) %>
         </ul>
       <% } else { %>
         <p>You have no components for this experiment.</p>
       <% } %>
+
+      <!-- Add New Component Form -->
+      <!-- <h4>Add New Component</h4> -->
+      <!-- <form action="/my/sections/<%= sectionId %>/experiments/<%= experimentId %>/createComponent" method="POST"> -->
+      <!--   <input type="text" name="name" placeholder="Component Name" required> -->
+      <!--   <textarea name="component_description" rows="2" placeholder="Component Description"></textarea> -->
+      <!--   <input type="url" name="buy_link" placeholder="Buy Link"> -->
+      <!--   <button type="submit">Add Component</button> -->
+      <!-- </form> -->
+      <a href="/my/sections/<%= sectionId %>/experiments/<%= experimentId %>/createComponent">+ Add componet</a>
     </section>
 
-    <hr />
+    
+    <% if (user) { %>
+      <section id="instructions-section">
+        <h3>Instructions</h3>
 
-    <section id="instructions-section">
-      <h3>Instructions</h3>
-      <% if (instructions.length > 0) { %>
-        <ul class="instruction-list">
-          <% instructions.forEach(function(instruction) { %>
-            <li class="instruction-item" data-step-id="<%= instruction.step_number %>">
-              <label class="instruction-label">
-                <input type="checkbox" class="instruction-checkbox" data-step="<%= instruction.step_number %>" />
-                <span class="instruction-text">
-                  <strong>Step <%= instruction.step_number %>:</strong> <%= instruction.instruction_text %>
-                </span>
-              </label>
-            </li>
-          <% }) %>
-        </ul>
-      <% } else { %>
-        <p>You have no instructions for this experiment yet.</p>
-      <% } %>
-    </section>
+        <% if (instructions) {
+          const inst = instructions;
+        %>
+          <!-- Preview Mode -->
+          <div id="instruction-preview" class="instruction-rendered" data-md="<%- inst.data.replace(/"/g, '&quot;').replace(/\r?\n/g, '&#10;') %>"></div>
+          <button id="edit-instruction-button">Edit</button>
+
+          <!-- Edit Form -->
+          <form id="edit-instruction-form" action="/my/sections/<%= sectionId %>/experiments/<%= experimentId %>/editInstruction/<%= inst.id %>" method="POST" style="display: none;">
+            <textarea name="instruction_markdown" id="edit-instruction-textarea" rows="20" cols="60"><%- inst.data %></textarea>
+            <br />
+            <button type="submit">Save</button>
+            <button type="button" id="cancel-instruction-edit">Cancel</button>
+          </form>
+        <% } else { %>
+          <!-- New Instruction Form -->
+          <form action="/my/sections/<%= sectionId %>/experiments/<%= experimentId %>/createInstruction" method="POST">
+            <textarea name="instruction_markdown" id="new-instruction-textarea" rows="20" cols="60" placeholder="Write your instruction in markdown..."></textarea>
+            <br />
+            <button type="submit">Add Instruction</button>
+          </form>
+        <% } %>
+      </section>
+    <% } else { %>
+      <p>Login to start adding instructions! <a href="/login">Login</a></p>
+    <% } %>
 
     <% if (user) { %>
       <section id="observation-section">
@@ -95,8 +130,9 @@
 
   </main>
 
+  
   <script>
-    // Render markdown safely
+    // Render markdown safely for observation
     document.querySelectorAll('.observation-rendered').forEach(el => {
       const raw = el.getAttribute('data-md');
       const parsed = marked.parse(raw);
@@ -104,47 +140,55 @@
       el.innerHTML = clean;
     });
 
-    // Edit/Cancel functionality
-    const editBtn = document.getElementById('edit-button');
-    const preview = document.getElementById('observation-preview');
-    const form = document.getElementById('edit-form');
-    const cancelBtn = document.getElementById('cancel-edit');
+    // Render markdown safely for instruction
+    document.querySelectorAll('.instruction-rendered').forEach(el => {
+      const raw = el.getAttribute('data-md');
+      const parsed = marked.parse(raw);
+      const clean = DOMPurify.sanitize(parsed);
+      el.innerHTML = clean;
+    });
 
-    if (editBtn && form && preview && cancelBtn) {
-      editBtn.addEventListener('click', () => {
-        preview.style.display = 'none';
-        form.style.display = 'block';
-        editBtn.style.display = 'none';
+    // Observation Edit/Cancel functionality
+    const obsEditBtn = document.getElementById('edit-button');
+    const obsPreview = document.getElementById('observation-preview');
+    const obsForm = document.getElementById('edit-form');
+    const obsCancelBtn = document.getElementById('cancel-edit');
+
+    if (obsEditBtn && obsForm && obsPreview && obsCancelBtn) {
+      obsEditBtn.addEventListener('click', () => {
+        obsPreview.style.display = 'none';
+        obsForm.style.display = 'block';
+        obsEditBtn.style.display = 'none';
       });
 
-      cancelBtn.addEventListener('click', () => {
-        form.style.display = 'none';
-        preview.style.display = 'block';
-        editBtn.style.display = 'inline';
+      obsCancelBtn.addEventListener('click', () => {
+        obsForm.style.display = 'none';
+        obsPreview.style.display = 'block';
+        obsEditBtn.style.display = 'inline';
       });
     }
 
-    // Toggle strikethrough on instruction checkbox
-    document.querySelectorAll('.instruction-checkbox').forEach(cb => {
-      cb.addEventListener('change', function () {
-        const label = this.closest('.instruction-label');
-        if (this.checked) {
-          label.classList.add('completed');
-        } else {
-          label.classList.remove('completed');
-        }
+    // Instruction Edit/Cancel functionality
+    const instEditBtn = document.getElementById('edit-instruction-button');
+    const instPreview = document.getElementById('instruction-preview');
+    const instForm = document.getElementById('edit-instruction-form');
+    const instCancelBtn = document.getElementById('cancel-instruction-edit');
+
+    if (instEditBtn && instForm && instPreview && instCancelBtn) {
+      instEditBtn.addEventListener('click', () => {
+        instPreview.style.display = 'none';
+        instForm.style.display = 'block';
+        instEditBtn.style.display = 'none';
       });
-    });
+
+      instCancelBtn.addEventListener('click', () => {
+        instForm.style.display = 'none';
+        instPreview.style.display = 'block';
+        instEditBtn.style.display = 'inline';
+      });
+    }
   </script>
 
-  <style>
-    /* Optional styling for crossed-out instructions */
-    .instruction-label.completed .instruction-text {
-      text-decoration: line-through;
-      opacity: 0.6;
-    }
-  </style>
 </body>
-
 </html>
 

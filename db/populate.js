@@ -42,13 +42,16 @@ CREATE TABLE IF NOT EXISTS experiment (
   is_public BOOLEAN DEFAULT false
 );
 
--- Instruction table: Steps to perform an experiment
+
 CREATE TABLE IF NOT EXISTS instruction (
-  id INTEGER PRIMARY KEY GENERATED ALWAYS AS IDENTITY,   -- Auto-incrementing instruction ID
-  experiment_id INTEGER NOT NULL REFERENCES experiment(id) ON DELETE CASCADE, -- Required experiment reference
-  step_number INTEGER NOT NULL,                          -- Step number/order
-  text TEXT NOT NULL                                     -- Instruction content
+  id INTEGER PRIMARY KEY GENERATED ALWAYS AS IDENTITY,
+  experiment_id INTEGER NOT NULL REFERENCES experiment(id) ON DELETE CASCADE,
+  user_id INTEGER REFERENCES app_user(id) ON DELETE SET NULL,
+  type VARCHAR(50), 
+  data TEXT,
+  created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
+
 
 -- Component table: Represents a physical component used in experiments
 CREATE TABLE IF NOT EXISTS component (
@@ -115,64 +118,7 @@ VALUES
   ('Design Your Own PCB', 'Plan and design a basic printed circuit board.', 5, 1, true),
   ('Simulate Before You Build', 'Use a simulator to test circuit behavior before assembly.', 5, 1, true);
 
--- Insert Components
-INSERT INTO component (name, description, datasheet_url, buy_link)
-VALUES 
-  ('LED', 'Light Emitting Diode', NULL, NULL),
-  ('Resistor 220Ω', 'Used to limit current to the LED', NULL, NULL),
-  ('SPST Switch', 'Single Pole Single Throw switch', NULL, NULL),
-  ('Pushbutton', 'Momentary contact switch', NULL, NULL),
-  ('555 Timer IC', 'Timer chip for creating delays or oscillation', NULL, NULL),
-  ('4017 Decade Counter IC', 'IC that counts pulses and activates outputs in sequence', NULL, NULL),
-  ('Soldering Iron', 'Used to melt solder', NULL, NULL),
-  ('PCB', 'Printed circuit board', NULL, NULL);
 
--- Link Experiments to Components
-INSERT INTO experiment_component (experiment_id, component_id, quantity, notes)
-VALUES 
-  (1, 1, 1, 'LED to show power flow'),
-  (1, 2, 1, 'Resistor to protect LED'),
-  (2, 2, 3, 'Multiple resistors for comparison'),
-
-  (3, 3, 1, 'Switch to control LED'),
-  (4, 4, 1, 'Pushbutton for input'),
-
-  (5, 7, 1, 'Essential soldering tool'),
-  (6, 7, 1, 'For rework of broken pads'),
-
-  (7, 5, 1, 'Main timing component'),
-  (7, 1, 1, 'LED to indicate blink'),
-
-  (8, 6, 1, 'Main IC for counting'),
-  (8, 1, 10, 'Ten LEDs to show sequence'),
-
-  (9, 8, 1, 'Designing a custom PCB'),
-  (10, 2, 2, 'Testing circuit in simulation');
-
--- Insert Instructions
-INSERT INTO instruction (experiment_id, step_number, text)
-VALUES 
-  (1, 1, 'Connect the resistor to the positive terminal of the battery.'),
-  (1, 2, 'Connect the LED after the resistor.'),
-  (1, 3, 'Complete the circuit by connecting the LED to the battery ground.'),
-
-  (3, 1, 'Place switch in series with the LED.'),
-  (3, 2, 'Toggle the switch to observe behavior.'),
-
-  (7, 1, 'Insert the 555 timer into the breadboard.'),
-  (7, 2, 'Wire the timer in astable mode.'),
-  (7, 3, 'Connect the LED to output pin and observe blinking.');
-
--- Insert Observations
-INSERT INTO observation (experiment_id, user_id, type, data)
-VALUES 
-  (1, 1, 'note', 'LED lights up when battery is connected.'),
-  (1, 1, 'measurement', 'Voltage across LED: 1.8V'),
-
-  (3, 1, 'note', 'Switch toggles LED on and off correctly.'),
-
-  (7, 1, 'note', 'LED blinks approximately once per second.'),
-  (7, 1, 'measurement', 'Frequency measured: ~1Hz using multimeter.');
 `;
 
 // -- Insert a user

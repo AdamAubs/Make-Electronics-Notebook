@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>MakeElectronics - Edit component</title>
+  <link rel="stylesheet" href="/experiment/editComponentStyles.css">
+  <link href="https://fonts.googleapis.com/css2?family=VT323&display=swap" rel="stylesheet">
+</head>
+<body>
+  <div class="container">
+    <a class="back-link" href="/my/sections/<%= sectionId %>/experiments">&#8592; Back to Experiments List</a>
+      
+    <h1>Edit Component</h1>
+
+    <%- include("../partials/errors.ejs") %>
+
+    <form action="/my/sections/<%= sectionId %>/experiments/<%= experimentId %>/editComponent/<%= component.id %>" method="POST">
+      <label>Name:</label>
+      <input type="text" name="name" value="<%= component.name %>" required>
+
+      <label>Description:</label>
+      <textarea name="component_description"><%= component.component_description %></textarea>
+
+      <label>Buy Link:</label>
+      <input type="url" name="buy_link" value="<%= component.buy_link %>">
+
+      <label>Datasheet Link:</label>
+      <input type="url" name="datasheet_link" value="<%= component.datasheet_url %>">
+
+      <button type="submit">Update</button>
+    </form>
+  </div>
+
+</body>
+</html>

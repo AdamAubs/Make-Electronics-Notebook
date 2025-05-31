@@ -15,14 +15,11 @@ async function experimentGet(req, res) {
     const experimentInfo = await db.getExperimentInfo(experimentId)
     console.log("Retrieved experiment info: ", experimentInfo)
 
-
     const instructions = await db.getExperimentInstructions(experimentId)
     console.log("Retrieved experiment instructions: ", instructions)
 
-
     const components = await db.getExperimentComponents(experimentId)
     console.log("Retrieved experiment components: ", components)
-
 
     res.render("experiment/experiment", { title: "Experiment", experimentInfo, instructions, components, sectionId, experimentId, user })
   } catch (err) {

@@ -1,0 +1,72 @@
+.instruction-list {
+  list-style-type: none;
+  padding: 0;
+  margin: 0;
+}
+
+.instruction-item {
+  background: #f9f9f9;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  padding: 1em;
+  margin-bottom: 1em;
+}
+
+.instruction-content {
+  display: flex;
+  flex-direction: column;
+}
+
+.instruction-main {
+  display: flex;
+  gap: 1em;
+  align-items: flex-start;
+  flex-wrap: wrap;
+}
+
+.instruction-details {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5em;
+}
+
+.instruction-step-name {
+  display: flex;
+  gap: 0.5em;
+}
+
+.step-input {
+  max-width: 2em;
+  font-size: 1rem;
+}
+
+.instruction-details textarea {
+  width: 100%;
+  max-width: 100%;
+}
+
+.instruction-actions {
+  display: flex;
+  gap: 0.5rem;
+  justify-content: flex-end;
+  flex-wrap: wrap;
+}
+
+.update-btn,
+.delete-btn {
+  padding: 0.4em 0.8em;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.update-btn {
+  background-color: #4caf50;
+  color: white;
+}
+
+.delete-btn {
+  background-color: #e53935;
+  color: white;
+}

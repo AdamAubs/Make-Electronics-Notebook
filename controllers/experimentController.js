@@ -17,10 +17,8 @@ async function experimentGet(req, res) {
     const experimentInfo = await db.getExperimentInfo(experimentId)
     console.log("Retrieved experiment info: ", experimentInfo)
 
-
-    const instructions = await db.getExperimentInstructions(experimentId)
-    console.log("Retrieved experiment instructions: ", instructions)
-
+    const instructions = await db.getExperimentInstructions(experimentId, userId);
+    console.log("Retrieved experiment instructions: ", instructions);
 
     const components = await db.getExperimentComponents(experimentId)
     console.log("Retrieved experiment components: ", components)
@@ -28,6 +26,7 @@ async function experimentGet(req, res) {
 
     const observation = await db.getExperimentObservation(experimentId, userId);
     console.log("Retrieved experiment observation: ", observation);
+
 
     res.render("experiment/experiment", { title: "Experiment", experimentInfo, instructions, components, observation, sectionId, experimentId, user })
   } catch (err) {
@@ -82,6 +81,44 @@ async function experimentDelete(req, res) {
   res.redirect(`/my/sections/${sectionId}/experiments`)
 }
 
+async function experimentCreateInstructionPost(req, res) {
+
+  const { instruction_markdown } = req.body
+  const experimentId = req.params.experimentId
+  const sectionId = req.params.sectionId
+  const userId = req.user.id
+
+  try {
+    console.log("Adding instructions to experiment...")
+
+    console.log(instruction_markdown)
+
+    await db.addInstruction(experimentId, userId, instruction_markdown)
+    res.redirect(`/my/sections/${sectionId}/experiments/${experimentId}`)
+  } catch (err) {
+    console.error("Controller was unable to add markdown instructions to db", err)
+  }
+}
+
+async function experimentUpdateInstructionPost(req, res) {
+
+  const { instId, sectionId, experimentId } = req.params
+  const { instruction_markdown } = req.body
+  console.log(instruction_markdown)
+  const userId = req.user.id
+
+  try {
+    console.log(`Updating ${req.user.username} instructions post...`)
+
+    await db.updateInstruction(instId, userId, instruction_markdown)
+
+    res.redirect(`/my/sections/${sectionId}/experiments/${experimentId}`);
+  } catch (err) {
+    console.error("Controller was unable to update instructions")
+  }
+}
+
+
 async function experimentCreateObservationPost(req, res) {
 
   const { observation_markdown } = req.body
@@ -117,11 +154,91 @@ async function experimentUpdateObservationPost(req, res) {
   }
 }
 
+async function experimentCreateComponentGet(req, res) {
+  const sectionId = req.params.sectionId
+  const experimentId = req.params.experimentId
+
+  console.log("going to create component page...")
+  res.render("experiment/createComponent", {
+    title: "Create Component", sectionId, experimentId
+  })
+}
+
+async function experimentCreateComponentPost(req, res) {
+  const { name, component_description, buy_link, datasheet_link } = req.body;
+  const { experimentId, sectionId } = req.params;
+  const userId = req.user.id;
+
+  try {
+    await db.addComponent(experimentId, name, component_description, buy_link, datasheet_link);
+    res.redirect(`/my/sections/${sectionId}/experiments/${experimentId}`);
+  } catch (err) {
+    console.error("Error creating component:", err);
+    res.status(500).send("Error creating component");
+  }
+}
+
+async function experimentEditComponentGet(req, res) {
+  const { sectionId, experimentId, componentId } = req.params;
+  const userId = req.user.id;
+
+  try {
+    const component = await db.getComponentById(componentId);
+
+    if (!component) {
+      return res.status(404).send("Component not found");
+    }
+
+    res.render("experiment/editComponent", {
+      sectionId,
+      experimentId,
+      component,
+    });
+  } catch (err) {
+    console.error("Error fetching component:", err);
+    res.status(500).send("Error loading edit page");
+  }
+}
+
+async function experimentEditComponentPost(req, res) {
+  const { name, component_description, buy_link, datasheet_link } = req.body;
+  const { componentId, experimentId, sectionId } = req.params;
+
+  try {
+    await db.updateComponent(componentId, name, component_description, buy_link, datasheet_link);
+    res.redirect(`/my/sections/${sectionId}/experiments/${experimentId}`);
+  } catch (err) {
+    console.error("Error updating component:", err);
+    res.status(500).send("Error updating component");
+  }
+}
+
+async function experimentDeleteComponentPost(req, res) {
+  const { componentId, experimentId, sectionId } = req.params;
+
+  try {
+    await db.deleteComponent(componentId, experimentId);
+    res.redirect(`/my/sections/${sectionId}/experiments/${experimentId}`);
+  } catch (err) {
+    console.error("Error deleting component:", err);
+    res.status(500).send("Error deleting component");
+  }
+}
+
+
 module.exports = {
   experimentGet,
   experimentCreateGet,
   experimentCreatePost,
   experimentDelete,
   experimentCreateObservationPost,
-  experimentUpdateObservationPost
+  experimentUpdateObservationPost,
+  experimentCreateInstructionPost,
+  experimentUpdateInstructionPost,
+  experimentCreateComponentGet,
+  experimentCreateComponentPost,
+  experimentEditComponentGet,
+  experimentEditComponentPost,
+  experimentDeleteComponentPost
+
 }

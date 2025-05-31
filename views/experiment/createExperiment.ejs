@@ -4,49 +4,32 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>MakeElectronics - Create experiment</title>
-  <style>
-    body {
-      font-family: Arial, sans-serif;
-      padding: 2rem;
-      background-color: #f8f9fa;
-    }
-    h1 {
-      color: #333;
-    }
-    ul {
-      list-style-type: none;
-      padding: 0;
-    }
-    li {
-      margin-bottom: 0.5rem;
-    }
-    a {
-      text-decoration: none;
-      color: #007bff;
-    }
-    a:hover {
-      text-decoration: underline;
-    }
-  </style>
+  <link rel="stylesheet" href="/section/createExperimentStyles.css">
+  <link href="https://fonts.googleapis.com/css2?family=VT323&display=swap" rel="stylesheet">
 </head>
 <body>
-  <h1>Create a new experiment releated to this section</h1>
-  <hr>
-  <%- include("../partials/errors.ejs") %>
-  <form action="/my/sections/<%= sectionId %>/experiments/createExperiment" method="POST">
-    <label for="experimentName">Experiment Name: </label>
-    <input type="text" name="experimentName" placeholder="Experiment Name">
-    
-    <label for="description">Description: </label>
-    <input type="text" name="description" placeholder="Description"> 
+  <div class="container">
+    <a class="back-link" href="/my/sections/<%= sectionId %>/experiments">&#8592; Back to Experiments List</a>
+      
+    <h1>Create a New Experiment</h1>
 
-    <label for="isPublic">
-      <input type="checkbox" name="isPublic" id="isPublic" value="true"> 
-      Make this experiment public in this section
-    </label>
+    <%- include("../partials/errors.ejs") %>
 
-    <button type="submit">Submit</button>
-  </form>
+    <form action="/my/sections/<%= sectionId %>/experiments/<%= experimentId %>" method="POST">
+      <label for="name ">Experiment Name:</label>
+      <input type="text" id="experimentName" name="experimentName" placeholder="Experiment Name" required />
+
+      <label for="description">Description:</label>
+      <input type="text" id="description" name="description" placeholder="Description" required />
+
+      <label for="isPublic">
+        <input type="checkbox" name="isPublic" id="isPublic" value="true" />
+        Make this experiment public in this section
+      </label>
+
+      <button type="submit">Submit</button>
+    </form>
+  </div>
 
 </body>
 </html>

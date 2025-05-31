@@ -67,6 +67,8 @@ CREATE TABLE IF NOT EXISTS experiment_component (
   id INTEGER PRIMARY KEY GENERATED ALWAYS AS IDENTITY,   -- Auto-incrementing join ID
   experiment_id INTEGER NOT NULL REFERENCES experiment(id) ON DELETE CASCADE,  -- Required experiment reference
   component_id INTEGER NOT NULL REFERENCES component(id) ON DELETE CASCADE,    -- Required component reference
+  user_id INTEGER NOT NULL REFERENCES app_user(id) ON DELETE CASCADE,
+  is_public BOOLEAN DEFAULT false,
   quantity INTEGER NOT NULL DEFAULT 1,                   -- Quantity used (default = 1)
   notes TEXT                                             -- Optional notes
 );

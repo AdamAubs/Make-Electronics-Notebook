@@ -22,10 +22,12 @@
       <label for="componentDescription">Description:</label>
       <input type="text" id="componentDescription" name="component_description" placeholder="Component Description" required />
       
-      <input type="url" name="buy_link" placeholder="Buy Link">
-      <input type="url" name="data_sheet_link" placeholder="Datasheet Link">
       
-      <!-- <input type="number" name="quantity" placeholder="Quantity"> -->
+      <label for="buyLink">Buy Link:</label>
+      <input type="url" id="buyLink" name="buy_link" placeholder="https://example.com" />
+
+      <label for="dataSheetLink">Datasheet Link:</label>
+      <input type="url" id="dataSheetLink" name="data_sheet_link" placeholder="https://example.com/datasheet.pdf" />
 
       <button type="submit">Add Component</button>
     </form>

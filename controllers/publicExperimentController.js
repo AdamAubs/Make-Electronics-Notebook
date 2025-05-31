@@ -3,9 +3,11 @@ const db = require("../models/experiment/queries.js")
 
 async function experimentGet(req, res) {
 
-  const sectionId = req.sectionId
-  const experimentId = req.experimentId
+  const sectionId = req.params.sectionId
+  const experimentId = req.params.experimentId
   const user = null
+
+  console.log(sectionId)
 
   try {
     console.log("Getting experiment for user")

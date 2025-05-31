@@ -17,12 +17,22 @@ async function experimentGet(req, res) {
     const experimentInfo = await db.getExperimentInfo(experimentId)
     console.log("Retrieved experiment info: ", experimentInfo)
 
-    const instructions = await db.getExperimentInstructions(experimentId, userId);
-    console.log("Retrieved experiment instructions: ", instructions);
+    console.log(user)
+    let instructions;
+    let components;
+    if (user) {
+      instructions = await db.getExperimentInstructions(experimentId, userId);
+      console.log("Retrieved experiment instructions: ", instructions);
 
-    const components = await db.getExperimentComponents(experimentId)
-    console.log("Retrieved experiment components: ", components)
+      components = await db.getExperimentComponents(experimentId, userId)
+      console.log("Retrieved experiment components: ", components)
+    } else {
+      // instructions = await db.getPublicExperimentInstructions(experimentId);
+      // console.log("Retrieved experiment instructions: ", instructions);
 
+      components = await db.getPublicExperimentComponents(experimentId)
+      console.log("Retrieved experiment components: ", components)
+    }
 
     const observation = await db.getExperimentObservation(experimentId, userId);
     console.log("Retrieved experiment observation: ", observation);
@@ -36,6 +46,7 @@ async function experimentGet(req, res) {
 
 async function experimentCreateGet(req, res) {
   const sectionId = req.params.sectionId
+
   console.log("going to create experiment page...")
   res.render("experiment/createExperiment", {
     title: "Create Experiment", sectionId
@@ -170,7 +181,7 @@ async function experimentCreateComponentPost(req, res) {
   const userId = req.user.id;
 
   try {
-    await db.addComponent(experimentId, name, component_description, buy_link, datasheet_link);
+    await db.addComponent(experimentId, name, component_description, buy_link, datasheet_link, userId);
     res.redirect(`/my/sections/${sectionId}/experiments/${experimentId}`);
   } catch (err) {
     console.error("Error creating component:", err);
@@ -183,7 +194,7 @@ async function experimentEditComponentGet(req, res) {
   const userId = req.user.id;
 
   try {
-    const component = await db.getComponentById(componentId);
+    const component = await db.getComponentById(experimentId, userId);
 
     if (!component) {
       return res.status(404).send("Component not found");
@@ -203,9 +214,10 @@ async function experimentEditComponentGet(req, res) {
 async function experimentEditComponentPost(req, res) {
   const { name, component_description, buy_link, datasheet_link } = req.body;
   const { componentId, experimentId, sectionId } = req.params;
+  const userId = req.user.id;
 
   try {
-    await db.updateComponent(componentId, name, component_description, buy_link, datasheet_link);
+    await db.updateComponent(componentId, userId, name, component_description, buy_link, datasheet_link);
     res.redirect(`/my/sections/${sectionId}/experiments/${experimentId}`);
   } catch (err) {
     console.error("Error updating component:", err);

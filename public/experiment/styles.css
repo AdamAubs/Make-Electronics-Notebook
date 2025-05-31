@@ -1,72 +1,148 @@
-.instruction-list {
-  list-style-type: none;
+body {
+  margin: 0;
+  font-family: 'VT323', monospace;
+  position: relative;
+  /* Required to contain the ::before pseudo-element */
+  min-height: 100vh;
+  overflow-x: hidden;
+}
+
+body::before {
+  content: "";
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-image: url('/images/scrollableNotebookBackground.png');
+  background-repeat: repeat-y;
+  background-position: center top;
+  background-size: 700px auto;
+  background-attachment: fixed;
+  opacity: 0.3;
+  z-index: -1;
+  pointer-events: none;
+}
+
+/* Notebook paper effect */
+.notebook-background {
+  background-image: url('/images/scrollableNotebookBackground.png');
+  background-repeat: repeat-y;
+  background-position: top center;
+  background-size: contain;
+  background-attachment: fixed;
+  min-height: 100vh;
+}
+
+/* Main page layout */
+#experiment-page {
+  max-width: 500px;
+  margin: 0.5rem auto;
+  padding: 0.5rem;
+}
+
+/* Distinct section styling */
+#experiment-page section {
+  margin-bottom: 2rem;
+  padding: 1.5rem;
+  border-radius: 8px;
+}
+
+/* Horizontal section divider */
+.section-divider {
+  border: none;
+  border-top: 5px dashed #999;
+  width: 100%;
+  opacity: 0.9;
+}
+
+/* Section titles */
+h2.experiment-title,
+h3 {
+  font-size: 2rem;
+  margin-top: 0;
+  color: #2b2b2b;
+}
+
+/* Back link styling */
+.back-link {
+  font-size: 1.2rem;
+  text-decoration: none;
+  margin-bottom: 1rem;
+  display: inline-block;
+}
+
+.back-link:hover {
+  text-decoration: underline;
+}
+
+/* Component styling */
+.component-list {
+  list-style: none;
   padding: 0;
   margin: 0;
 }
 
-.instruction-item {
-  background: #f9f9f9;
-  border: 1px solid #ddd;
-  border-radius: 8px;
-  padding: 1em;
-  margin-bottom: 1em;
+.component-item {
+  padding: 1rem;
+  margin-bottom: 1rem;
+  background-color: #fefefe;
+  border: 1px solid #ccc;
+  border-radius: 6px;
 }
 
-.instruction-content {
-  display: flex;
-  flex-direction: column;
-}
-
-.instruction-main {
-  display: flex;
-  gap: 1em;
-  align-items: flex-start;
-  flex-wrap: wrap;
-}
-
-.instruction-details {
-  flex: 1;
-  display: flex;
-  flex-direction: column;
-  gap: 0.5em;
-}
-
-.instruction-step-name {
-  display: flex;
-  gap: 0.5em;
-}
-
-.step-input {
-  max-width: 2em;
-  font-size: 1rem;
-}
-
-.instruction-details textarea {
-  width: 100%;
+.component-item a {
+  word-break: break-word;
+  overflow-wrap: break-word;
+  display: inline-block;
   max-width: 100%;
 }
 
-.instruction-actions {
-  display: flex;
-  gap: 0.5rem;
-  justify-content: flex-end;
-  flex-wrap: wrap;
-}
-
-.update-btn,
-.delete-btn {
-  padding: 0.4em 0.8em;
+/* Buttons and links */
+button,
+a {
+  font-family: inherit;
+  font-size: 1rem;
+  padding: 0.4rem 0.8rem;
   border: none;
-  border-radius: 5px;
+  background-color: #4f8a8b;
+  color: white;
+  border-radius: 4px;
   cursor: pointer;
+  text-decoration: none;
+  margin-top: 0.5rem;
+  display: inline-block;
 }
 
-.update-btn {
-  background-color: #4caf50;
-  color: white;
+button:hover,
+a:hover {
+  background-color: #306f6e;
 }
 
-.delete-btn {
-  background-color: #e53935;
-  color: white;
+/* Textarea styling */
+textarea {
+  width: 100%;
+  font-family: 'VT323', monospace;
+  font-size: 1.1rem;
+  padding: 0.5rem;
+  border-radius: 4px;
+  border: 1px solid #aaa;
+  resize: vertical;
+  background: #fefefe;
+}
+
+/* Responsive */
+@media (max-width: 600px) {
+  #experiment-page {
+    padding: 1rem;
+  }
+
+  button,
+  a {
+    font-size: 0.9rem;
+  }
+
+  textarea {
+    font-size: 1rem;
+  }
 }

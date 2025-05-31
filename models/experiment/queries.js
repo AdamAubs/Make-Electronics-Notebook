@@ -38,6 +38,23 @@ async function getExperimentInfo(experimentId) {
   }
 }
 
+async function getPublicExperimentInstructions(experimentId) {
+  try {
+    const SQL = `
+                SELECT * 
+                FROM instruction AS i
+                WHERE i.experiment_id = $1;
+    `
+    const result = await pool.query(SQL, [experimentId])
+    console.log(result.rows[0])
+    return result.rows[0]
+  } catch (err) {
+    console.error("Error fetching instructions from db", err)
+    return []
+  }
+
+}
+
 async function getExperimentInstructions(experimentId, userId) {
   try {
     const SQL = `
@@ -55,17 +72,35 @@ async function getExperimentInstructions(experimentId, userId) {
   }
 }
 
-
-async function getExperimentComponents(experimentId) {
+async function getPublicExperimentComponents(experimentId) {
   try {
     const SQL = `
                 SELECT *
                 FROM component AS c
                 JOIN experiment_component AS ec ON (c.id = ec.component_id)
-                WHERE ec.experiment_id = ($1);
+                WHERE ec.experiment_id = ($1); 
     `
 
     const { rows } = await pool.query(SQL, [experimentId])
+    // console.log(rows)
+    return rows
+  } catch (err) {
+    console.error("Error fetching components from db", err)
+    return []
+  }
+}
+
+
+async function getExperimentComponents(experimentId, userId) {
+  try {
+    const SQL = `
+                SELECT *
+                FROM component AS c
+                JOIN experiment_component AS ec ON (c.id = ec.component_id)
+                WHERE ec.experiment_id = ($1) AND ec.user_id = ($2);
+    `
+
+    const { rows } = await pool.query(SQL, [experimentId, userId])
     // console.log(rows)
     return rows
   } catch (err) {
@@ -153,7 +188,7 @@ async function updateObservation(obsId, userId, observation_markdown) {
   }
 }
 
-async function addComponent(experimentId, name, component_description, buy_link, datasheet_link) {
+async function addComponent(experimentId, name, component_description, buy_link, datasheet_link, userId) {
   try {
     const newComponent = await pool.query(
       `INSERT INTO component (name, description, buy_link, datasheet_url)
@@ -166,35 +201,70 @@ async function addComponent(experimentId, name, component_description, buy_link,
 
     // Associate with experiment
     await pool.query(
-      `INSERT INTO experiment_component (experiment_id, component_id)
-       VALUES ($1, $2)`,
-      [experimentId, componentId]
+      `INSERT INTO experiment_component (experiment_id, component_id, user_id)
+       VALUES ($1, $2, $3)`,
+      [experimentId, componentId, userId]
     );
   } catch (err) {
     console.error(err)
   }
 }
 
-async function getComponentById(componentId) {
+async function getComponentById(experimentId, userId) {
   try {
-    const result = await pool.query(`SELECT * FROM component WHERE id = $1`, [componentId])
+    const SQL = `
+                    SELECT *
+                    FROM component AS c
+                    JOIN experiment_component AS ec ON (c.id = ec.component_id)
+                    WHERE ec.experiment_id = ($1) AND ec.user_id = ($2);
+        `
+
+    const result = await pool.query(SQL, [experimentId, userId])
     return result.rows[0]
   } catch (err) {
     console.log(err)
   }
 }
 
-// TODO: Make editing components not affect alluser components list, just the user who edited it
-
-async function updateComponent(componentId, name, component_description, buy_link, datasheet_link) {
+async function updateComponent(componentId, userId, name, component_description, buy_link, datasheet_link) {
   try {
-    await pool.query(
-      `UPDATE component
-       SET name = $1, description = $2, buy_link = $3, datasheet_url = $4
-       WHERE id = $5`,
-      [name, component_description, buy_link, datasheet_link, componentId]
+    // 1. Check how many users are using this component
+    const { rows: usage } = await pool.query(
+      `SELECT COUNT(DISTINCT user_id) AS user_count
+       FROM experiment_component
+       WHERE component_id = $1`,
+      [componentId]
     );
 
+    const multipleUsers = parseInt(usage[0].user_count) > 1;
+
+    if (multipleUsers) {
+      // 2. Create a new component row
+      const newComponent = await pool.query(
+        `INSERT INTO component (name, description, buy_link, datasheet_url)
+         VALUES ($1, $2, $3, $4)
+         RETURNING id`,
+        [name, component_description, buy_link, datasheet_link]
+      );
+
+      const newComponentId = newComponent.rows[0].id;
+
+      // 3. Update the experiment_component row for *this user only*
+      await pool.query(
+        `UPDATE experiment_component
+         SET component_id = $1
+         WHERE component_id = $2 AND user_id = $3`,
+        [newComponentId, componentId, userId]
+      );
+    } else {
+      // 4. Safe to update the existing component directly
+      await pool.query(
+        `UPDATE component
+         SET name = $1, description = $2, buy_link = $3, datasheet_url = $4
+         WHERE id = $5`,
+        [name, component_description, buy_link, datasheet_link, componentId]
+      );
+    }
   } catch (err) {
     console.error(err);
   }
@@ -208,7 +278,6 @@ async function deleteComponent(componentId, experimentId) {
       [componentId, experimentId]
     );
 
-    // Optional: delete component itself if not referenced by other experiments
     const check = await pool.query(
       `SELECT COUNT(*) FROM experiment_component WHERE component_id = $1`,
       [componentId]
@@ -227,7 +296,9 @@ module.exports = {
   addExperiment,
   getExperimentByNameAndSection,
   getExperimentInfo,
+  getPublicExperimentInstructions,
   getExperimentInstructions,
+  getPublicExperimentComponents,
   getExperimentComponents,
   deleteExperiment,
   addObservation,

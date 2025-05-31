@@ -14,181 +14,125 @@
 </head>
 
 <body>
-  <main id="experiment-page">
-
-    <header>
-      <h2 class="experiment-title"><%= experimentInfo[0].experiment_title %></h2>
-      <p class="experiment-description"><%= experimentInfo[0].experiment_description %></p>
-    </header>
-
-    <section id="components-section">
-      <h3>Components</h3>
-
-      <% if (components.length > 0) { %>
-        <ul class="component-list">
-          <% components.forEach(function(component) { %>
-            <li class="component-item">
-              <!-- <article> -->
-              <!--   <form action="/my/sections/<%= sectionId %>/experiments/<%= experimentId %>/editComponent/<%= component.id %>" method="POST"> -->
-              <!--     <input type="text" name="name" value="<%= component.name %>" required> -->
-              <!--     <textarea name="component_description" rows="2"><%= component.component_description %></textarea> -->
-              <!--     <input type="url" name="buy_link" value="<%= component.buy_link %>"> -->
-              <!--     <button type="submit">Save</button> -->
-              <!--   </form> -->
-              <!--   <form action="/my/sections/<%= sectionId %>/experiments/<%= experimentId %>/deleteComponent/<%= component.id %>" method="POST" style="display:inline;"> -->
-              <!--     <button type="submit" onclick="return confirm('Are you sure you want to delete this component?')">Delete</button> -->
-              <!--   </form> -->
-              <!-- </article> -->
-                <p><%= component.name %></p>
-                <p><%= component.description %></p>
-                <p><%= component.datasheet_url || '' %></p>
-                <p><%= component.buy_link || ''%></p>
-                <a href="/my/sections/<%= sectionId %>/experiments/<%= experimentId %>/editComponent/<%= component.component_id %>">Edit</a>
-                <form action="/my/sections/<%= sectionId %>/experiments/<%= experimentId %>/deleteComponent/<%= component.component_id %>" method="POST" style="display:inline;">
-                  <button type="submit" onclick="return confirm('Are you sure you want to delete this component?')">Delete</button>
-                </form>
-            </li>
-          <% }) %>
-        </ul>
-      <% } else { %>
-        <p>You have no components for this experiment.</p>
+    <main id="experiment-page">
+      
+      <% if (user) { %>
+        <a class="back-link" href="/my/sections/<%= sectionId %>/experiments">&#8592; Back to Experiments List</a>
+      <% } else { %> 
+        <a class="back-link" href="/sections/<%= sectionId %>/experiments">&#8592; Back to Experiments List</a>
       <% } %>
 
-      <!-- Add New Component Form -->
-      <!-- <h4>Add New Component</h4> -->
-      <!-- <form action="/my/sections/<%= sectionId %>/experiments/<%= experimentId %>/createComponent" method="POST"> -->
-      <!--   <input type="text" name="name" placeholder="Component Name" required> -->
-      <!--   <textarea name="component_description" rows="2" placeholder="Component Description"></textarea> -->
-      <!--   <input type="url" name="buy_link" placeholder="Buy Link"> -->
-      <!--   <button type="submit">Add Component</button> -->
-      <!-- </form> -->
-      <a href="/my/sections/<%= sectionId %>/experiments/<%= experimentId %>/createComponent">+ Add componet</a>
-    </section>
+      <header>
+        <h1 class="experiment-title"><%= experimentInfo[0].experiment_title %></h1>
+        <p class="experiment-description"><%= experimentInfo[0].experiment_description %></p>
+      </header>
+      
+      
+      <hr class="section-divider">
 
-    
-    <% if (user) { %>
-      <section id="instructions-section">
-        <h3>Instructions</h3>
+      <% if (user) { %>
+        <section id="components-section">
+        <h3>Components</h3>
+          <% if (components.length > 0) { %>
+            <ul class="component-list">
+              <% components.forEach(function(component) { %>
+                <li class="component-item">
+                    <p><%= component.name %></p>
+                    <p><%= component.description %></p>
+                    <p>
+                      <% if (component.datasheet_url) { %>
+                        <a href="<%= component.datasheet_url %>" target="_blank" rel="noopener noreferrer">
+                          Link to View Datasheet
+                        </a>
+                      <% } %>
+                    </p>
+                    <p>
+                      <% if (component.buy_link) { %>
+                        <a href="<%= component.buy_link %>" target="_blank" rel="noopener noreferrer">
+                          Link to Buy Component
+                        </a>
+                      <% } %>
+                    </p>
+                    <a href="/my/sections/<%= sectionId %>/experiments/<%= experimentId %>/editComponent/<%= component.component_id %>">Edit</a>
+                    <form action="/my/sections/<%= sectionId %>/experiments/<%= experimentId %>/deleteComponent/<%= component.component_id %>" method="POST" style="display:inline;">
+                      <button type="submit" onclick="return confirm('Are you sure you want to delete this component?')">Delete</button>
+                    </form>
+                </li>
+              <% }) %>
+            </ul>
+          <% } else { %>
+            <p>You have no components for this experiment.</p>
+          <% } %>
 
-        <% if (instructions) {
-          const inst = instructions;
-        %>
-          <!-- Preview Mode -->
-          <div id="instruction-preview" class="instruction-rendered" data-md="<%- inst.data.replace(/"/g, '&quot;').replace(/\r?\n/g, '&#10;') %>"></div>
-          <button id="edit-instruction-button">Edit</button>
+          <a href="/my/sections/<%= sectionId %>/experiments/<%= experimentId %>/createComponent">+ Add componet</a>
+        </section>
 
-          <!-- Edit Form -->
-          <form id="edit-instruction-form" action="/my/sections/<%= sectionId %>/experiments/<%= experimentId %>/editInstruction/<%= inst.id %>" method="POST" style="display: none;">
-            <textarea name="instruction_markdown" id="edit-instruction-textarea" rows="20" cols="60"><%- inst.data %></textarea>
-            <br />
-            <button type="submit">Save</button>
-            <button type="button" id="cancel-instruction-edit">Cancel</button>
-          </form>
-        <% } else { %>
-          <!-- New Instruction Form -->
-          <form action="/my/sections/<%= sectionId %>/experiments/<%= experimentId %>/createInstruction" method="POST">
-            <textarea name="instruction_markdown" id="new-instruction-textarea" rows="20" cols="60" placeholder="Write your instruction in markdown..."></textarea>
-            <br />
-            <button type="submit">Add Instruction</button>
-          </form>
-        <% } %>
-      </section>
-    <% } else { %>
-      <p>Login to start adding instructions! <a href="/login">Login</a></p>
-    <% } %>
+        <hr class="section-divider">
 
-    <% if (user) { %>
-      <section id="observation-section">
-        <h3>Your Observation</h3>
+        <section id="instructions-section">
+          <h3>Instructions</h3>
 
-        <% if (observation) {
-          const obs = observation;
-        %>
-          <!-- Preview Mode -->
-          <div id="observation-preview" class="observation-rendered" data-md="<%- obs.data.replace(/"/g, '&quot;').replace(/\r?\n/g, '&#10;') %>"></div>
-          <button id="edit-button">Edit</button>
+          <% if (instructions) {
+            const inst = instructions;
+          %>
+            <!-- Preview Mode -->
+            <div id="instruction-preview" class="instruction-rendered" data-md="<%- inst.data.replace(/"/g, '&quot;').replace(/\r?\n/g, '&#10;') %>"></div>
+            <button id="edit-instruction-button">Edit</button>
 
-          <!-- Edit Form -->
-          <form id="edit-form" action="/my/sections/<%= sectionId %>/experiments/<%= experimentId %>/editObservation/<%= obs.id %>" method="POST" style="display: none;">
-            <textarea name="observation_markdown" id="edit-textarea" rows="20" cols="60"><%- obs.data %></textarea>
-            <br />
-            <button type="submit">Save</button>
-            <button type="button" id="cancel-edit">Cancel</button>
-          </form>
-        <% } else { %>
-          <!-- New Observation Form -->
-          <form action="/my/sections/<%= sectionId %>/experiments/<%= experimentId %>/createObservation" method="POST">
-            <textarea name="observation_markdown" id="observation_markdown" rows="20" cols="60" placeholder="Write your observation in markdown..."></textarea>
-            <br />
-            <button type="submit">Submit Observation</button>
-          </form>
-        <% } %>
-      </section>
-    <% } else { %>
-      <p>Login to start making observations! <a href="/login">Login</a></p>
-    <% } %>
+            <!-- Edit Form -->
+            <form id="edit-instruction-form" action="/my/sections/<%= sectionId %>/experiments/<%= experimentId %>/editInstruction/<%= inst.id %>" method="POST" style="display: none;">
+              <textarea name="instruction_markdown" id="edit-instruction-textarea" rows="20" cols="60"><%- inst.data %></textarea>
+              <br />
+              <button type="submit">Save</button>
+              <button type="button" id="cancel-instruction-edit">Cancel</button>
+            </form>
+          <% } else { %>
+            <!-- New Instruction Form -->
+            <form action="/my/sections/<%= sectionId %>/experiments/<%= experimentId %>/createInstruction" method="POST">
+              <textarea name="instruction_markdown" id="new-instruction-textarea" rows="20" cols="60" placeholder="Write your instruction in markdown..."></textarea>
+              <br />
+              <button type="submit">Add Instruction</button>
+            </form>
+          <% } %>
+        </section>
 
-  </main>
+        <hr class="section-divider">
 
-  
-  <script>
-    // Render markdown safely for observation
-    document.querySelectorAll('.observation-rendered').forEach(el => {
-      const raw = el.getAttribute('data-md');
-      const parsed = marked.parse(raw);
-      const clean = DOMPurify.sanitize(parsed);
-      el.innerHTML = clean;
-    });
+        <section id="observation-section">
+          <h3>Your Observation</h3>
 
-    // Render markdown safely for instruction
-    document.querySelectorAll('.instruction-rendered').forEach(el => {
-      const raw = el.getAttribute('data-md');
-      const parsed = marked.parse(raw);
-      const clean = DOMPurify.sanitize(parsed);
-      el.innerHTML = clean;
-    });
+          <% if (observation) {
+            const obs = observation;
+          %>
+            <!-- Preview Mode -->
+            <div id="observation-preview" class="observation-rendered" data-md="<%- obs.data.replace(/"/g, '&quot;').replace(/\r?\n/g, '&#10;') %>"></div>
+            <button id="edit-button">Edit</button>
 
-    // Observation Edit/Cancel functionality
-    const obsEditBtn = document.getElementById('edit-button');
-    const obsPreview = document.getElementById('observation-preview');
-    const obsForm = document.getElementById('edit-form');
-    const obsCancelBtn = document.getElementById('cancel-edit');
+            <!-- Edit Form -->
+            <form id="edit-form" action="/my/sections/<%= sectionId %>/experiments/<%= experimentId %>/editObservation/<%= obs.id %>" method="POST" style="display: none;">
+              <textarea name="observation_markdown" id="edit-textarea" rows="20" cols="60"><%- obs.data %></textarea>
+              <br />
+              <button type="submit">Save</button>
+              <button type="button" id="cancel-edit">Cancel</button>
+            </form>
+          <% } else { %>
+            <!-- New Observation Form -->
+            <form action="/my/sections/<%= sectionId %>/experiments/<%= experimentId %>/createObservation" method="POST">
+              <textarea name="observation_markdown" id="observation_markdown" rows="20" cols="60" placeholder="Write your observation in markdown..."></textarea>
+              <br />
+              <button type="submit">Add Observation</button>
+            </form>
+          <% } %>
+        </section>
 
-    if (obsEditBtn && obsForm && obsPreview && obsCancelBtn) {
-      obsEditBtn.addEventListener('click', () => {
-        obsPreview.style.display = 'none';
-        obsForm.style.display = 'block';
-        obsEditBtn.style.display = 'none';
-      });
+      <% } else { %>
+        <p>Login to add components, instructions and observations for your experiment! <a href="/login">Login</a></p>
+      <% } %>
 
-      obsCancelBtn.addEventListener('click', () => {
-        obsForm.style.display = 'none';
-        obsPreview.style.display = 'block';
-        obsEditBtn.style.display = 'inline';
-      });
-    }
-
-    // Instruction Edit/Cancel functionality
-    const instEditBtn = document.getElementById('edit-instruction-button');
-    const instPreview = document.getElementById('instruction-preview');
-    const instForm = document.getElementById('edit-instruction-form');
-    const instCancelBtn = document.getElementById('cancel-instruction-edit');
-
-    if (instEditBtn && instForm && instPreview && instCancelBtn) {
-      instEditBtn.addEventListener('click', () => {
-        instPreview.style.display = 'none';
-        instForm.style.display = 'block';
-        instEditBtn.style.display = 'none';
-      });
-
-      instCancelBtn.addEventListener('click', () => {
-        instForm.style.display = 'none';
-        instPreview.style.display = 'block';
-        instEditBtn.style.display = 'inline';
-      });
-    }
-  </script>
-
+    </main>
 </body>
+
+<script src="/experiment/markdownParser.js"></script>
+
 </html>
 

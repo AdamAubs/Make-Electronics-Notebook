@@ -61,7 +61,7 @@ You can try the app here:
 - Creating a RESTful routing system, including nested routes and CRUD patterns
 
 ## Entity-relationship-diagram (ERD) of database model
-![database-ERD](./diagrams/ERD_diagram_final.png)
+![database-ERD](./diagrams/ERD_diagram_final.webp)
 
 ## Project structure
 ```bash

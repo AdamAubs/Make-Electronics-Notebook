@@ -1,5 +1,11 @@
-const { Pool } = require("pg")
+const { Pool } = require('pg');
+require('dotenv').config()
 
-module.exports = new Pool({
-  connectionString: "postgresql://tickly:tickly@localhost:5432/make_electronics"
+const pool = new Pool({
+  connectionString: process.env.DATABASE_URL,
+  ssl: {
+    ssl: process.env.NODE_ENV === "production" ? { rejectUnauthorized: false } : false,
+  }
 })
+
+module.exports = pool;

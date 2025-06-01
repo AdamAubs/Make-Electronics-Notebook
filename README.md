@@ -60,8 +60,8 @@ You can try the app here:
 - Handling Markdown safely for user-generated content
 - Creating a RESTful routing system, including nested routes and CRUD patterns
 
-## Entity-relationship-diagram (ERD)of database model
-![database-ERD](./diagrams/experiment_erd_readable.png)
+## Entity-relationship-diagram (ERD) of database model
+![database-ERD](./diagrams/ERD_diagram_final.png)
 
 ## Project structure
 ```bash

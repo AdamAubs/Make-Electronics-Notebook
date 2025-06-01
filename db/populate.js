@@ -104,7 +104,7 @@ VALUES
   ('Experiment 2', 'Go with the Flow', 1, 1, true),
   ('Experiment 3', 'Applying Pressure', 1, 1, true),
   ('Experiment 4', 'Heat and Power', 1, 1, true),
-  ('Experiment 5', 'Let's Make a Battery', 1, 1, true),
+  ('Experiment 5', 'Let''s Make a Battery', 1, 1, true),
 
   -- Section Two
   ('Experiment 6', 'Getting Connected', 2, 1, true),
@@ -114,79 +114,32 @@ VALUES
   ('Experiment 10', 'Transistor Switching', 2, 1, true),
   ('Experiment 11', 'Light and Sound', 2, 1, true),
 
-  ('Using a SPST Switch', 'Control a circuit with a Single Pole Single Throw switch.', 2, 1, true),
-  ('Toggle with a Pushbutton', 'Implement a pushbutton as an input in a circuit.', 2, 1, true),
-
-  -- Section Three
-  ('Solder a Header Pin', 'Learn to solder a pin to a PCB.', 3, 1, true),
-  ('Fix a Broken Connection', 'Resolder a lifted pad on a board.', 3, 1, true),
+   -- Section Three
+  ('Experiment 12', 'Joining Two Wires Together', 3, 1, true),
+  ('Experiment 13', 'Roasting an LED', 3, 1, true),
+  ('Experiment 14', 'A Wearable Multivibrator', 3, 1, true),
 
   -- Section Four
-  ('Blink an LED with a 555 Timer', 'Use a 555 timer IC in astable mode.', 4, 1, true),
-  ('Build a Counter with a 4017 IC', 'Use a decade counter to sequence outputs.', 4, 1, true),
+  ('Experiment 15', 'Emitting a Pulse', 4, 1, true),
+  ('Experiment 16', 'Set Your Tone', 4, 1, true),
+  ('Experiment 17', 'An Alarming Idea', 4, 1, true),
+  ('Experiment 18', 'Reflex Tester', 4, 1, true),
+  ('Experiment 19', 'Learning Logic', 4, 1, true),
+  ('Experiment 20', 'The Unlocker', 4, 1, true),
+  ('Experiment 21', 'The Button Blocker', 4, 1, true),
+  ('Experiment 22', 'Flipping and Bouncing', 4, 1, true),
+  ('Experiment 23', 'Nice Dice', 4, 1, true),
 
   -- Section Five
-  ('Design Your Own PCB', 'Plan and design a basic printed circuit board.', 5, 1, true),
-  ('Simulate Before You Build', 'Use a simulator to test circuit behavior before assembly.', 5, 1, true);
+  ('Experiment 24', 'Magnetism', 5, 1, true),
+  ('Experiment 25', 'Tabletop Power Generation', 5, 1, true),
+  ('Experiment 26', 'Loudspeaker Destruction', 5, 1, true),
+  ('Experiment 27', 'Making a Coil React', 5, 1, true),
+  ('Experiment 28', 'One Radio, No Solder, No Power', 5, 1, true),
+  ('Experiment 29', 'Hardware Meets Software', 5, 1, true),
+  ('Experiment 30', 'Nicer Dice', 5, 1, true),
+  ('Experiment 31', 'The Learning Process', 5, 1, true);
 `;
-
-// -- Insert a user
-// INSERT INTO app_user (username, email, password_hash)
-// VALUES ('maker123', 'maker@example.com', 'hashed_password_here');
-//
-// -- Insert a section
-// INSERT INTO section (title, description, created_by_user_id)
-// VALUES (
-//   'Basic Circuits',
-//   'Covers fundamental experiments like resistors, LEDs, and batteries.',
-//   1
-// );
-//
-// -- Insert experiments
-// INSERT INTO experiment (title, description, section_id, created_by_user_id)
-// VALUES 
-//   (
-//     'LED Blinker',
-//     'Make an LED blink using a resistor and a battery.',
-//     1,
-//     1
-//   ),
-//   (
-//     'Voltage Divider',
-//     'Demonstrate how voltage divides across resistors in series.',
-//     1,
-//     1
-//   );
-//
-// -- Insert instructions for experiment 1
-// INSERT INTO instruction (experiment_id, step_number, text)
-// VALUES 
-//   (1, 1, 'Connect a 220-ohm resistor to the positive leg of the LED.'),
-//   (1, 2, 'Attach the negative leg of the LED to the ground.'),
-//   (1, 3, 'Power the circuit using a 9V battery and observe the LED.');
-//
-// -- Insert components
-// INSERT INTO component (name, description, datasheet_url, buy_link)
-// VALUES
-//   ('LED (Red)', 'Standard 5mm red LED', NULL, 'https://example.com/led'),
-//   ('220-ohm Resistor', 'Resistor with color bands: red-red-brown-gold', NULL, 'https://example.com/resistor'),
-//   ('9V Battery', 'Standard 9V battery', NULL, 'https://example.com/9vbattery'),
-//   ('Breadboard', '400-point breadboard for prototyping', NULL, 'https://example.com/breadboard');
-//
-// -- Associate components to experiment 1 (LED Blinker)
-// INSERT INTO experiment_component (experiment_id, component_id, quantity)
-// VALUES
-//   (1, 1, 1),  -- LED
-//   (1, 2, 1),  -- Resistor
-//   (1, 3, 1),  -- 9V Battery
-//   (1, 4, 1);  -- Breadboard
-//
-// -- Observation by user for experiment 1
-// INSERT INTO observation (experiment_id, user_id, type, data)
-// VALUES 
-//   (1, 1, 'reading', 'LED blinks every 1 second'),
-//   (1, 1, 'note', 'Resistor gets slightly warm after prolonged use');
-// `;
 
 async function main() {
 

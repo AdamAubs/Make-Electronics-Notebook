@@ -8,10 +8,10 @@ async function sectionsListGet(req, res) {
 
     if (req.isAuthenticated()) {
       const userId = req.user.id;
-      console.log("Getting sections created by user with userId: ", userId)
+      //console.log("Getting sections created by user with userId: ", userId)
       const privateSections = await db.getPrivateSections(userId);
 
-      console.log("Retrieved private sections:", privateSections);
+      // console.log("Retrieved private sections:", privateSections);
       return res.render("index", {
         title: "Make Electronics Guide",
         user: req.user,
@@ -22,7 +22,7 @@ async function sectionsListGet(req, res) {
       });
     }
 
-    console.log("Retrieved public sections:", publicSections);
+    //console.log("Retrieved public sections:", publicSections);
     res.render("index", {
       title: "Make Electronics Guide",
       user: null,

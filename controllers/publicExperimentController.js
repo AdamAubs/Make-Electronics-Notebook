@@ -7,21 +7,21 @@ async function experimentGet(req, res) {
   const experimentId = req.params.experimentId
   const user = null
 
-  console.log(sectionId)
+  //console.log(sectionId)
 
   try {
-    console.log("Getting experiment for user")
+    //console.log("Getting experiment for user")
     const experimentId = req.params.experimentId
-    console.log("Getting experiment id", experimentId)
+    //console.log("Getting experiment id", experimentId)
 
     const experimentInfo = await db.getExperimentInfo(experimentId)
-    console.log("Retrieved experiment info: ", experimentInfo)
+    //console.log("Retrieved experiment info: ", experimentInfo)
 
     const instructions = await db.getExperimentInstructions(experimentId)
-    console.log("Retrieved experiment instructions: ", instructions)
+    //console.log("Retrieved experiment instructions: ", instructions)
 
     const components = await db.getExperimentComponents(experimentId)
-    console.log("Retrieved experiment components: ", components)
+    //console.log("Retrieved experiment components: ", components)
 
     res.render("experiment/experiment", { title: "Experiment", experimentInfo, instructions, components, sectionId, experimentId, user, flashErrorMessages: [], flashSuccessMessages: [] })
   } catch (err) {

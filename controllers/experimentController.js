@@ -12,21 +12,21 @@ async function experimentGet(req, res) {
 
 
   try {
-    console.log("Getting experiment for user")
+    //console.log("Getting experiment for user")
     const experimentId = req.params.experimentId
-    console.log("Getting experiment id", experimentId)
+    //console.log("Getting experiment id", experimentId)
 
     const experimentInfo = await db.getExperimentInfo(experimentId)
-    console.log("Retrieved experiment info: ", experimentInfo)
+    //console.log("Retrieved experiment info: ", experimentInfo)
 
     const instructions = await db.getExperimentInstructions(experimentId, userId);
-    console.log("Retrieved experiment instructions: ", instructions);
+    //console.log("Retrieved experiment instructions: ", instructions);
 
     const components = await db.getExperimentComponents(experimentId, userId)
-    console.log("Retrieved experiment components: ", components)
+    //console.log("Retrieved experiment components: ", components)
 
     const observation = await db.getExperimentObservation(experimentId, userId);
-    console.log("Retrieved experiment observation: ", observation);
+    //console.log("Retrieved experiment observation: ", observation);
 
     res.render("experiment/experiment", {
       title: "Experiment",

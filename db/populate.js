@@ -95,31 +95,30 @@ VALUES
   ('Section Three: Soldering', NULL, 1, true),
   ('Section Four: Chips, Ahoy!', NULL, 1, true),
   ('Section Five What Next?', NULL, 1, true);
-`;
 
-// -- Insert Experiments
-// INSERT INTO experiment (title, description, section_id, created_by_user_id, is_public)
-// VALUES 
-//   -- Section One
-//   ('Build a Simple Circuit', 'Use a battery, resistor, and LED to build a basic circuit.', 1, 1, true),
-//   ('Understand Resistors', 'Measure resistance and learn how they affect circuits.', 1, 1, true),
-//
-//   -- Section Two
-//   ('Using a SPST Switch', 'Control a circuit with a Single Pole Single Throw switch.', 2, 1, true),
-//   ('Toggle with a Pushbutton', 'Implement a pushbutton as an input in a circuit.', 2, 1, true),
-//
-//   -- Section Three
-//   ('Solder a Header Pin', 'Learn to solder a pin to a PCB.', 3, 1, true),
-//   ('Fix a Broken Connection', 'Resolder a lifted pad on a board.', 3, 1, true),
-//
-//   -- Section Four
-//   ('Blink an LED with a 555 Timer', 'Use a 555 timer IC in astable mode.', 4, 1, true),
-//   ('Build a Counter with a 4017 IC', 'Use a decade counter to sequence outputs.', 4, 1, true),
-//
-//   -- Section Five
-//   ('Design Your Own PCB', 'Plan and design a basic printed circuit board.', 5, 1, true),
-//   ('Simulate Before You Build', 'Use a simulator to test circuit behavior before assembly.', 5, 1, true);
-// `;
+-- Insert Experiments
+INSERT INTO experiment (title, description, section_id, created_by_user_id, is_public)
+VALUES 
+  -- Section One
+  ('Build a Simple Circuit', 'Use a battery, resistor, and LED to build a basic circuit.', 1, 1, true),
+  ('Understand Resistors', 'Measure resistance and learn how they affect circuits.', 1, 1, true),
+
+  -- Section Two
+  ('Using a SPST Switch', 'Control a circuit with a Single Pole Single Throw switch.', 2, 1, true),
+  ('Toggle with a Pushbutton', 'Implement a pushbutton as an input in a circuit.', 2, 1, true),
+
+  -- Section Three
+  ('Solder a Header Pin', 'Learn to solder a pin to a PCB.', 3, 1, true),
+  ('Fix a Broken Connection', 'Resolder a lifted pad on a board.', 3, 1, true),
+
+  -- Section Four
+  ('Blink an LED with a 555 Timer', 'Use a 555 timer IC in astable mode.', 4, 1, true),
+  ('Build a Counter with a 4017 IC', 'Use a decade counter to sequence outputs.', 4, 1, true),
+
+  -- Section Five
+  ('Design Your Own PCB', 'Plan and design a basic printed circuit board.', 5, 1, true),
+  ('Simulate Before You Build', 'Use a simulator to test circuit behavior before assembly.', 5, 1, true);
+`;
 
 // -- Insert a user
 // INSERT INTO app_user (username, email, password_hash)
@@ -182,7 +181,7 @@ VALUES
 async function main() {
 
   const client = new Client({
-    connectionString: process.env.DEV_DATABASE_URL,
+    connectionString: process.env.DATABASE_URL,
   })
 
   try {

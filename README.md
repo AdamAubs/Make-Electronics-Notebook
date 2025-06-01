@@ -1,6 +1,9 @@
 # MakeElectronics Notebook - Based on Make Electronics Third Edition
-
 - This app helps readers of Make: Electronics (Third Edition) easily plan, document, and organize the experiments provided in the book. It also supports creating custom experiments, components, instructions, and observations.
+
+## Live Demo
+You can try the app here:  
+➡️ **[MakeElectronics Notebook on Railway](https://make-electronics-notebook.up.railway.app)**  
 
 ## Features
 
@@ -57,8 +60,8 @@
 - Handling Markdown safely for user-generated content
 - Creating a RESTful routing system, including nested routes and CRUD patterns
 
-## Entity-relationship-diagram (ERD)of database model
-![database-ERD](./diagrams/experiment_erd_readable.png)
+## Entity-relationship-diagram (ERD) of database model
+![database-ERD](./diagrams/ERD_diagram_final.webp)
 
 ## Project structure
 ```bash

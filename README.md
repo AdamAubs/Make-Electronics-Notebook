@@ -102,19 +102,8 @@ MakeElectronicsNoteBook/
 ├── .env                      # Environment variables (e.g., DB credentials)
 ├── package.json
 └── package-lock.json
+```
 
-```
-```
-```
-```
-```
-```
-```
-```
-```
-```
-```
-```
 
 # Route Overview
 

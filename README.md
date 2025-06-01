@@ -1,15 +1,66 @@
-# MakeElectronicsNoteBook - Based on Make Electronics Third Edition
+# MakeElectronics Notebook - Based on Make Electronics Third Edition
 
-- Helps readers easily plan and document experiments given 
-in the book. Also allows user to create there own experiments
+- This app helps readers of Make: Electronics (Third Edition) easily plan, document, and organize the experiments provided in the book. It also supports creating custom experiments, components, instructions, and observations.
 
+## Features
+
+- Create and organize experiments into user-defined sections
+- Add components, step-by-step instructions, and observations to each experiment
+- Supports Markdown for writing instructions and observations
+- User authentication with signup/login using Passport.js
+- Public view for shared experiments (read-only)
+- Responsive notebook-style UI with custom backgrounds
+- PostgreSQL-based backend with full CRUD functionality
+
+## Tech Stack
+
+- **Backend**: Node.js, Express.js
+- **Frontend**: EJS templates, vanilla CSS
+- **Database**: PostgreSQL
+- **Authentication**: Passport.js 
+- **Validation**: express-validator
+- **Other Tools**: Markdown parser
+
+## Getting Started
+
+1. Clone the repo:
+   ```bash
+   git clone https://github.com/your-username/MakeElectronicsNotebook.git
+   cd MakeElectronicsNotebook
+   ```
+2. Install dependencies:
+   ```bash
+   npm install
+   ```
+
+3. Set up environment variables:
+   Create a .env file based on .env.example:
+   ```bash
+   DATABASE_URL=your_postgres_connection_string
+   SESSION_SECRET=your_secret
+   ```
+4. Initialize the database:
+   ```bash
+   node db/populate.js
+   ```
+
+5. Start the app
+   ```bash
+   node app.js
+   ```
+
+### What I learned
+
+- How to structure a full-stack Express.js app with route controllers, models, and views
+- Working with PostgreSQL using parameterized queries and connection pooling
+- Managing user authentication securely with Passport.js
+- Handling Markdown safely for user-generated content
+- Creating a RESTful routing system, including nested routes and CRUD patterns
 
 ## Entity-relationship-diagram (ERD)of database model
 ![database-ERD](./diagrams/experiment_erd_readable.png)
 
 ## Project structure
-```bash
-```
 ```bash
 
 MakeElectronicsNoteBook/
@@ -104,7 +155,6 @@ MakeElectronicsNoteBook/
 └── package-lock.json
 ```
 
-
 # Route Overview
 
 ## Public Routes
@@ -156,5 +206,7 @@ MakeElectronicsNoteBook/
 
 ---
 
+## Acknowledgements
+- Inspired by the book *Make: Electronics (Third Edition)* by Charles Platt
 
 

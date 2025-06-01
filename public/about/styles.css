@@ -1,0 +1,74 @@
+ body {
+   margin: 0;
+   padding: 0;
+   font-family: 'VT323', monospace;
+   background: url('/images/aboutPageBackground.png') no-repeat center center fixed;
+   background-size: cover;
+   color: #1e1e1e;
+ }
+
+ main {
+   max-width: 800px;
+   margin: auto;
+   background-color: rgba(255, 255, 255, 0.86);
+   padding: 2rem;
+   line-height: 1.6;
+ }
+
+ h1,
+ h2 {
+   color: #2b2b2b;
+   border-bottom: 2px solid #ddd;
+   padding-bottom: 0.3rem;
+ }
+
+ a {
+   color: #007acc;
+   text-decoration: none;
+ }
+
+ a:hover {
+   text-decoration: underline;
+ }
+
+ pre {
+   background-color: #f4f4f4;
+   padding: 1rem;
+   border-radius: 4px;
+   overflow-x: auto;
+   font-size: 0.95rem;
+   line-height: 1.4;
+   border: 1px solid #ccc;
+ }
+
+ img {
+   display: block;
+   max-width: 100%;
+   height: auto;
+   margin-top: 1rem;
+   border: 1px solid #ccc;
+   border-radius: 4px;
+ }
+
+ section {
+   margin-bottom: 2rem;
+ }
+
+ /* Responsive tweaks */
+ @media screen and (max-width: 600px) {
+   main {
+     padding: 1rem;
+   }
+
+   h1 {
+     font-size: 1.75rem;
+   }
+
+   h2 {
+     font-size: 1.3rem;
+   }
+
+   pre {
+     font-size: 0.85rem;
+   }
+ }

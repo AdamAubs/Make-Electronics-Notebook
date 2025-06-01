@@ -13,6 +13,7 @@ initializePassport(passport)
 
 const indexRouter = require("./routes/index.js")
 const usersRouter = require("./routes/users.js")
+const aboutRouter = require("./routes/about.js")
 const sectionsIndexRouter = require("./routes/sections/sections.js")
 const experimentsRouter = require("./routes/sections/experiment.js");
 const publicSectionRouter = require("./routes/sections/publicSections.js");
@@ -38,6 +39,7 @@ app.use(express.static(assetsPath))
 
 app.use("/", indexRouter)
 app.use("/", usersRouter)
+app.use("/about", aboutRouter)
 app.use("/sections/", publicSectionRouter)
 app.use("/sections/", publicExperimentsRouter)
 app.use("/my/sections/", sectionsIndexRouter)

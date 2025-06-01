@@ -3,18 +3,24 @@ const pool = require("../db/pool.js");
 const { validationResult } = require("express-validator");
 
 async function signupFormGet(req, res) {
-  res.render("users/signup", {
-    errors: [],
-    oldInput: {},
-    flashErrorMessages: [],
-    flashSuccessMessages: []
-  })
+  try {
+    res.render("users/signup", {
+      errors: [],
+      oldInput: {},
+      flashErrorMessages: [],
+      flashSuccessMessages: []
+    })
+  } catch (err) {
+    console.error("Signup error:", err);
+    req.flash("error", "Unable to load sign up page");
+    res.redirect("/")
+
+  }
 }
 
 async function signupFormPost(req, res) {
   const { username, email, password } = req.body;
   const errors = validationResult(req).array();
-
 
   try {
     const existing = await pool.query(
@@ -61,22 +67,27 @@ async function signupFormPost(req, res) {
 }
 
 async function loginFormGet(req, res) {
-  const flashErrorMessages = req.flash("error");
-  const flashSuccessMessages = req.flash("success");
-  res.render("users/login", { errors: [], flashErrorMessages, flashSuccessMessages })
+  try {
+    const flashErrorMessages = req.flash("error");
+    const flashSuccessMessages = req.flash("success");
+    res.render("users/login", { errors: [], flashErrorMessages, flashSuccessMessages })
+  } catch (err) {
+    console.error(err)
+    req.flash("error", "Unable to load login page");
+    res.redirect("/")
+  }
 }
 
 async function logoutFormGet(req, res) {
   req.logout((err) => {
     if (err) {
       console.error("Logout error:", err);
-      return res.status(500).render("users/login", {
-        errors: [{ msg: "Error logging out." }],
-        flashErrorMessages: [],
-        flashSuccessMessages: []
-      });
+      req.flash("error", "Logout failed.");
+      return res.redirect("/");
     }
-    res.redirect("/login")
+
+    req.flash("success", "You have logged out.");
+    res.redirect("/");
   })
 }
 

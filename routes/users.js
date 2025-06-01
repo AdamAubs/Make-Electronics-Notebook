@@ -26,10 +26,20 @@ userRouter.post("/login", loginLimiter, loginValidator, (req, res, next) => {
     });
   }
 
-  passport.authenticate('local', {
-    successRedirect: '/',
-    failureRedirect: '/login',
-    failureFlash: true
+  passport.authenticate('local', (err, user, info) => {
+    if (err) return next(err);
+    if (!user) {
+      req.flash("error", info.message || "Invalid credentials");
+      return res.redirect("/login");
+    }
+
+    // Log the user in
+    req.logIn(user, (err) => {
+      if (err) return next(err);
+
+      req.flash("success", "Successfully logged in!");
+      return res.redirect("/");
+    });
   })(req, res, next);
 });
 userRouter.get("/logout", userController.logoutFormGet)

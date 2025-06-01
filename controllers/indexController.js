@@ -6,7 +6,6 @@ async function sectionsListGet(req, res) {
   try {
     const publicSections = await db.getPublicSections();
 
-
     if (req.isAuthenticated()) {
       const userId = req.user.id;
       console.log("Getting sections created by user with userId: ", userId)
@@ -17,7 +16,9 @@ async function sectionsListGet(req, res) {
         title: "Make Electronics Guide",
         user: req.user,
         publicSections,
-        privateSections
+        privateSections,
+        flashErrorMessages: req.flash('error'),
+        flashSuccessMessages: req.flash('success')
       });
     }
 
@@ -26,17 +27,17 @@ async function sectionsListGet(req, res) {
       title: "Make Electronics Guide",
       user: null,
       publicSections,
-      privateSections: null // or just omit if your template handles undefined
+      privateSections: null,
+      flashErrorMessages: req.flash('error'),
+      flashSuccessMessages: req.flash('success')
     });
 
   } catch (err) {
     console.error("Unable to render sections", err);
-    res.status(500).send("Internal Server Error");
+    req.flash("error", "Unable to render sections");
+    res.redirect("/")
   }
 }
-
-
-
 
 module.exports = {
   sectionsListGet

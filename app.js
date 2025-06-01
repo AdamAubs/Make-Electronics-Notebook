@@ -2,7 +2,6 @@
 const express = require("express")
 const app = express();
 const path = require("node:path")
-const connectLivereload = require('connect-livereload');
 
 require("dotenv").config()
 const session = require("express-session")
@@ -28,8 +27,6 @@ app.use(flash());
 
 app.use(passport.initialize());
 app.use(passport.session())
-
-app.use(connectLivereload());
 
 app.set("view engine", "ejs")
 app.use(express.urlencoded({ extended: true }))

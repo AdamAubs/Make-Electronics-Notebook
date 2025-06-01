@@ -24,12 +24,10 @@
           <h3 class="column-title">Experiments from the Book or Contributed by Users</h3>
           <% if (publicExperiments.length > 0) { %>
             <% publicExperiments.forEach(function(experiment) { %>
-              <div class="experiment-card">
-                <a href="/my/sections/<%= experiment.section_id %>/experiments/<%= experiment.id %>">
-                  <%= experiment.title %>
-                </a>
-                <p><%= experiment.description %></p>
-              </div>
+              <a class="experiment-card" href="/my/sections/<%= experiment.section_id %>/experiments/<%= experiment.id %>">
+                <p class="title"><%= experiment.title %></p>
+                <p class="description"><%= experiment.description %></p>
+              </a>
             <% }) %>
           <% } else { %>
             <p>No book experiments yet.</p>
@@ -65,12 +63,10 @@
       <div class="experiment-column public">
         <% if (publicExperiments.length > 0) { %>
           <% publicExperiments.forEach(function(experiment) { %>
-            <div class="experiment-card">
-              <a href="/sections/<%= experiment.section_id %>/experiments/<%= experiment.id %>">
-                <%= experiment.title %>
-              </a>
-              <p><%= experiment.description %></p>
-            </div>
+            <a class="experiment-card" href="/sections/<%= experiment.section_id %>/experiments/<%= experiment.id %>">
+              <p class="title"><%= experiment.title %></p>
+              <p class="description"><%= experiment.description %></p>
+            </a>
           <% }) %>
         <% } else { %>
           <p>No experiments have been made for this section yet.</p>

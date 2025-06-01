@@ -49,19 +49,20 @@ body {
 .experiment-card {
   background-color: white;
   border-radius: 8px;
-  padding: 1rem;
+  padding: 0.2rem 1rem 1rem 1rem;
   box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
-}
-
-.experiment-card a {
-  font-weight: bold;
-  color: #222;
   text-decoration: none;
 }
 
-.experiment-card p {
+.experiment-card .title {
+  font-weight: bold;
+  color: #222;
+}
+
+.experiment-card .description {
   margin: 0.5rem 0 0;
   color: #555;
+
 }
 
 .add-experiment-btn {

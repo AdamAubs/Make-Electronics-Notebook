@@ -49,13 +49,22 @@ html {
   box-sizing: border-box;
 }
 
-.nav-left a,
+.nav-left a {
+  text-decoration: none;
+  font-weight: bold;
+  padding: 1rem 2rem;
+  border-radius: 4px;
+  color: #333;
+  transition: background 0.2s ease;
+  background-color: #e74c3c;
+}
+
 .nav-right a {
   text-decoration: none;
   font-weight: bold;
-  padding: 0.5rem 1rem;
+  padding: 1rem 2rem;
   border-radius: 4px;
-  background-color: #f3f3f3;
+  background-color: #007acc;
   color: #333;
   transition: background 0.2s ease;
 }
@@ -112,19 +121,16 @@ html {
   justify-content: center;
 }
 
-.section-card {
+.section-link {
   background: rgba(255, 255, 255, 0.9);
   padding: 1rem;
   border-radius: 8px;
   min-width: 200px;
   max-width: 300px;
-  text-align: center;
-}
-
-.section-link {
   display: block;
   font-size: 1.25rem;
   font-weight: bold;
+  text-align: center;
   color: #007acc;
   text-decoration: none;
   margin-bottom: 0.5rem;

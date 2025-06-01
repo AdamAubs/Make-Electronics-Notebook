@@ -100,7 +100,7 @@ VALUES
 INSERT INTO experiment (title, description, section_id, created_by_user_id, is_public)
 VALUES 
   -- Section One
-  ('Experiment 1', 'Taste the Power1', 1, 1, true),
+  ('Experiment 1', 'Taste the Power', 1, 1, true),
   ('Experiment 2', 'Go with the Flow', 1, 1, true),
   ('Experiment 3', 'Applying Pressure', 1, 1, true),
   ('Experiment 4', 'Heat and Power', 1, 1, true),
@@ -108,7 +108,7 @@ VALUES
 
   -- Section Two
   ('Experiment 6', 'Getting Connected', 2, 1, true),
-  ('Experiment 7', 'Investigating a Releay', 2, 1, true),
+  ('Experiment 7', 'Investigating a Relay', 2, 1, true),
   ('Experiment 8', 'A Relay Oscillator', 2, 1, true),
   ('Experiment 9', 'Time and Capacitors', 2, 1, true),
   ('Experiment 10', 'Transistor Switching', 2, 1, true),

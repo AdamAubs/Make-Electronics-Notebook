@@ -6,6 +6,7 @@ const connectLivereload = require('connect-livereload');
 
 require("dotenv").config()
 const session = require("express-session")
+const flash = require('connect-flash');
 const passport = require("passport")
 const initializePassport = require("./config/passportConfig")
 initializePassport(passport)
@@ -17,13 +18,12 @@ const experimentsRouter = require("./routes/sections/experiment.js");
 const publicSectionRouter = require("./routes/sections/publicSections.js");
 const publicExperimentsRouter = require("./routes/sections/publicExperiment.js")
 
-const apiRoutes = require('./routes/api.js');
-
 app.use(session({
   secret: process.env.SESSION_SECRET,
   resave: false,
   saveUninitialized: false
 }))
+app.use(flash());
 
 app.use(passport.initialize());
 app.use(passport.session())
@@ -38,11 +38,14 @@ app.use(express.static(assetsPath))
 
 app.use("/", indexRouter)
 app.use("/", usersRouter)
-app.use('/api', apiRoutes);
 app.use("/sections/", publicSectionRouter)
 app.use("/sections/", publicExperimentsRouter)
 app.use("/my/sections/", sectionsIndexRouter)
 app.use("/my/sections/", experimentsRouter)
+
+app.use((req, res) => {
+  res.status(404).render('404');
+});
 
 const PORT = process.env.PORT || 3000
 app.listen(PORT, () => console.log(`Makeelectronics app listening on port ${PORT}`))

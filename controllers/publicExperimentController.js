@@ -23,7 +23,7 @@ async function experimentGet(req, res) {
     const components = await db.getExperimentComponents(experimentId)
     console.log("Retrieved experiment components: ", components)
 
-    res.render("experiment/experiment", { title: "Experiment", experimentInfo, instructions, components, sectionId, experimentId, user })
+    res.render("experiment/experiment", { title: "Experiment", experimentInfo, instructions, components, sectionId, experimentId, user, flashErrorMessages: [], flashSuccessMessages: [] })
   } catch (err) {
     console.error("Unable to get render experiment", err)
   }

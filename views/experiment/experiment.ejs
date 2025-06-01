@@ -28,6 +28,8 @@
       </header>
       
       
+      <%- include("../partials/errors.ejs"), { flashErrorMessages, flashSuccessMessages } %>
+      
       <hr class="section-divider">
 
       <% if (user) { %>
@@ -37,8 +39,8 @@
             <ul class="component-list">
               <% components.forEach(function(component) { %>
                 <li class="component-item">
-                    <p><%= component.name %></p>
-                    <p><%= component.description %></p>
+                    <p>Name: <%= component.name %></p>
+                    <p>Description: <%= component.description %></p>
                     <p>
                       <% if (component.datasheet_url) { %>
                         <a href="<%= component.datasheet_url %>" target="_blank" rel="noopener noreferrer">
@@ -126,7 +128,11 @@
         </section>
 
       <% } else { %>
-        <p>Login to add components, instructions and observations for your experiment! <a href="/login">Login</a></p>
+        <div class="login-message">
+          <p>Login to add components, instructions, and observations for your experiment!</p>
+          
+          <a href="/login">Login</a>
+        </div>
       <% } %>
 
     </main>

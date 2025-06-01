@@ -18,7 +18,6 @@ async function getExperimentByNameAndSection(userInput, sectionId) {
   }
 }
 
-
 async function getExperimentInfo(experimentId) {
   try {
     const SQL = `
@@ -38,23 +37,6 @@ async function getExperimentInfo(experimentId) {
   }
 }
 
-async function getPublicExperimentInstructions(experimentId) {
-  try {
-    const SQL = `
-                SELECT * 
-                FROM instruction AS i
-                WHERE i.experiment_id = $1;
-    `
-    const result = await pool.query(SQL, [experimentId])
-    console.log(result.rows[0])
-    return result.rows[0]
-  } catch (err) {
-    console.error("Error fetching instructions from db", err)
-    return []
-  }
-
-}
-
 async function getExperimentInstructions(experimentId, userId) {
   try {
     const SQL = `
@@ -71,25 +53,6 @@ async function getExperimentInstructions(experimentId, userId) {
     return []
   }
 }
-
-async function getPublicExperimentComponents(experimentId) {
-  try {
-    const SQL = `
-                SELECT *
-                FROM component AS c
-                JOIN experiment_component AS ec ON (c.id = ec.component_id)
-                WHERE ec.experiment_id = ($1); 
-    `
-
-    const { rows } = await pool.query(SQL, [experimentId])
-    // console.log(rows)
-    return rows
-  } catch (err) {
-    console.error("Error fetching components from db", err)
-    return []
-  }
-}
-
 
 async function getExperimentComponents(experimentId, userId) {
   try {
@@ -296,9 +259,7 @@ module.exports = {
   addExperiment,
   getExperimentByNameAndSection,
   getExperimentInfo,
-  getPublicExperimentInstructions,
   getExperimentInstructions,
-  getPublicExperimentComponents,
   getExperimentComponents,
   deleteExperiment,
   addObservation,

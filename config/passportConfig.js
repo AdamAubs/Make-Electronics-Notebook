@@ -13,12 +13,12 @@ function initialize(passport) {
 
         const user = rows[0]
         if (!user) {
-          return done(null, false, { message: "No user found" })
+          return done(null, false, { message: "Incorrect password or username" })
         }
 
         const isMatch = await bcrypt.compare(password, user.password_hash)
         if (!isMatch) {
-          return done(null, false, { message: "Incorrect password" })
+          return done(null, false, { message: "Incorrect password or username" })
         }
 
         return done(null, user)

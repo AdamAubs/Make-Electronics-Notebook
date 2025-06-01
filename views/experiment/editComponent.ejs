@@ -9,11 +9,11 @@
 </head>
 <body>
   <div class="container">
-    <a class="back-link" href="/my/sections/<%= sectionId %>/experiments">&#8592; Back to Experiments List</a>
+    <a class="back-link" href="/my/sections/<%= sectionId %>/experiments/<%= experimentId %>">&#8592; Back to Experiments List</a>
       
     <h1>Edit Component</h1>
-
-    <%- include("../partials/errors.ejs") %>
+    
+    <%- include("../partials/errors.ejs"), { flashErrorMessages, flashSuccessMessages } %>
 
     <form action="/my/sections/<%= sectionId %>/experiments/<%= experimentId %>/editComponent/<%= component.id %>" method="POST">
       <label>Name:</label>

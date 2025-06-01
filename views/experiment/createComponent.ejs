@@ -13,7 +13,7 @@
       
     <h1>Add a New Component</h1>
 
-    <%- include("../partials/errors.ejs") %>
+    <%- include("../partials/errors.ejs"), { flashErrorMessages, flashSuccessMessages } %>
 
     <form action="/my/sections/<%= sectionId %>/experiments/<%= experimentId %>/createComponent" method="POST">
       <label for="componentName">Component Name:</label>

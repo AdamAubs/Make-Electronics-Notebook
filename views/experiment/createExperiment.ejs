@@ -13,7 +13,7 @@
       
     <h1>Create a New Experiment</h1>
 
-    <%- include("../partials/errors.ejs") %>
+    <%- include("../partials/errors.ejs"), { flashErrorMessages, flashSuccessMessages } %>
 
     <form action="/my/sections/<%= sectionId %>/experiments/createExperiment" method="POST">
       <label for="name ">Experiment Name:</label>

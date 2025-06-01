@@ -16,6 +16,8 @@
 
     <h2 class="section-title">Experiments for this Section</h2>
 
+    <%- include("../partials/errors.ejs"), { flashErrorMessages, flashSuccessMessages } %>
+
     <% if (user) { %>
       <div class="experiments-container">
         <div class="experiment-column public">
@@ -76,8 +78,6 @@
       </div>
     <% } %>
   </div>
-
-  <script src="http://localhost:35729/livereload.js"></script>
 </body>
 
 </html>

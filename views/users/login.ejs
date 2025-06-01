@@ -11,6 +11,9 @@
 <body>
   <div class="form-container">
     <h1>Login</h1>
+    
+    <%- include("../partials/errors.ejs", { flashErrorMessages, flashSuccessMessages } ) %>
+
     <form method="POST" action="/login">
       <div class="form-group">
         <label for="username">Username:</label>
@@ -25,7 +28,6 @@
     <p>Don't have an account? <a href="/signup">Sign up</a></p>
   </div>
 
-  <script src="http://localhost:35729/livereload.js"></script>
 </body>
 
 </html>

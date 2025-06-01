@@ -1,0 +1,50 @@
+html,
+body {
+  height: 100%;
+  overflow: hidden;
+  /* Disable scrollbars */
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  font-family: 'VT323', monospace;
+  background-image: url('/images/pageNotFoundBackground.png');
+  background-size: cover;
+  background-position: center;
+  background-attachment: fixed;
+  color: #222;
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.text-container {
+  background-color: #f9f2e7;
+  padding: 2rem;
+  border-radius: 10px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
+}
+
+h1 {
+  font-size: 64px;
+  color: #d9534f;
+  margin-bottom: 20px;
+}
+
+p {
+  font-size: 28px;
+  margin-bottom: 20px;
+}
+
+a {
+  font-size: 28px;
+  color: #0275d8;
+  text-decoration: underline;
+}
+
+a:hover {
+  color: #014c8c;
+}

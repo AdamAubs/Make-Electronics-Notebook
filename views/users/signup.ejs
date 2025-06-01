@@ -12,37 +12,32 @@
   <main class="form-container" role="main">
     <h1>Sign Up</h1>
 
-    <% if (error) { %>
-      <p class="error-message">
-        <%= error %>
-      </p>
-      <% } %>
+    <%- include("../partials/errors.ejs", { flashErrorMessages, flashSuccessMessages } ) %>
 
-        <form method="POST" action="/signup" aria-label="Sign Up Form">
-          <div class="form-group">
-            <label for="username">Username:</label>
-            <input type="text" name="username" id="username" required>
-          </div>
+    <form method="POST" action="/signup" aria-label="Sign Up Form">
+      <div class="form-group">
+        <label for="username">Username:</label>
+        <input type="text" name="username" id="username" value="<%= oldInput?.username || '' %>" required>
+      </div>
 
-          <div class="form-group">
-            <label for="email">Email:</label>
-            <input type="email" name="email" id="email" required>
-          </div>
+      <div class="form-group">
+        <label for="email">Email:</label>
+        <input type="email" name="email" id="email" value="<%= oldInput?.email || '' %>" required>
+      </div>
 
-          <div class="form-group">
-            <label for="password">Password:</label>
-            <input type="password" name="password" id="password" required>
-          </div>
+      <div class="form-group">
+        <label for="password">Password:</label>
+        <input type="password" name="password" id="password" required>
+      </div>
 
-          <button type="submit">Sign Up</button>
-        </form>
+      <button type="submit">Sign Up</button>
+    </form>
 
-        <p class="alt-action">
-          <a href="/login">Already have an account?</a>
-        </p>
+    <p class="alt-action">
+      <a href="/login">Already have an account?</a>
+    </p>
   </main>
 
-  <script src="http://localhost:35729/livereload.js"></script>
 </body>
 
 </html>

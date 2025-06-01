@@ -100,10 +100,20 @@ VALUES
 INSERT INTO experiment (title, description, section_id, created_by_user_id, is_public)
 VALUES 
   -- Section One
-  ('Build a Simple Circuit', 'Use a battery, resistor, and LED to build a basic circuit.', 1, 1, true),
-  ('Understand Resistors', 'Measure resistance and learn how they affect circuits.', 1, 1, true),
+  ('Experiment 1', 'Taste the Power1', 1, 1, true),
+  ('Experiment 2', 'Go with the Flow', 1, 1, true),
+  ('Experiment 3', 'Applying Pressure', 1, 1, true),
+  ('Experiment 4', 'Heat and Power', 1, 1, true),
+  ('Experiment 5', 'Let's Make a Battery', 1, 1, true),
 
   -- Section Two
+  ('Experiment 6', 'Getting Connected', 2, 1, true),
+  ('Experiment 7', 'Investigating a Releay', 2, 1, true),
+  ('Experiment 8', 'A Relay Oscillator', 2, 1, true),
+  ('Experiment 9', 'Time and Capacitors', 2, 1, true),
+  ('Experiment 10', 'Transistor Switching', 2, 1, true),
+  ('Experiment 11', 'Light and Sound', 2, 1, true),
+
   ('Using a SPST Switch', 'Control a circuit with a Single Pole Single Throw switch.', 2, 1, true),
   ('Toggle with a Pushbutton', 'Implement a pushbutton as an input in a circuit.', 2, 1, true),
 
